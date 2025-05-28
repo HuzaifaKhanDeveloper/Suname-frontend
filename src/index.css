@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-light: #ff7f50;
+  --primary-dark: #1e3d59;
+  --text-light: #1a2b3c;
+  --text-dark: #f5f5f5;
+  --transition-standard: 0.3s ease-in-out;
+  --transition-mode: 0.5s ease-in-out;
+}
+
+/* Base scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scrollbar thumb for light mode */
+body.light ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Scrollbar thumb for dark mode */
+body.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Scrollbar thumb hover effect for light mode */
+body.light ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar thumb hover effect for dark mode */
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar styling */
+body.light {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+body.dark {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Base styles */
+body {
+  @apply min-h-screen transition-colors duration-500 overflow-x-hidden;
+  background-attachment: fixed;
+}
+
+body.light {
+  background: linear-gradient(135deg, #ffdab9, #ff7f50, #87ceeb);
+  color: var(--text-light);
+}
+
+body.dark {
+  background: linear-gradient(135deg, #1e3d59, #000033, #1e3d59);
+  color: var(--text-dark);
+}
+
+/* Glass effect components */
+.glass-effect {
+  @apply backdrop-blur-md bg-opacity-20 shadow-lg;
+}
+
+.ocean-card {
+  @apply rounded-lg p-6 transition-all duration-300 hover:transform hover:scale-[1.02];
+}
+
+.light .ocean-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 127, 80, 0.1);
+}
+
+.dark .ocean-card {
+  background: rgba(30, 61, 89, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 51, 0.2);
+}
+
+/* Buttons */
+.ocean-button {
+  @apply px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95;
+}
+
+.light .ocean-button {
+  background: var(--primary-light);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 127, 80, 0.3);
+}
+
+.dark .ocean-button {
+  background: var(--primary-dark);
+  color: var(--text-dark);
+  box-shadow: 0 4px 15px rgba(30, 61, 89, 0.3);
+}
+
+/* Animations */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Wave hover effect */
+.wave-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: translateX(-100%);
+  transition: transform var(--transition-standard);
+}
+
+.wave-hover:hover::after {
+  transform: translateX(0);
+}
+
+/* Ripple effect */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.3s;
+}
+
+.ripple:active::after {
+  transform: scale(2);
+  opacity: 0;
+  transition: 0s;
+}
+
+/* Sequential fade animations */
+.sequential-fade > * {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.sequential-fade > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.sequential-fade > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.sequential-fade > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.sequential-fade > *:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.sequential-fade > *:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ocean waves background */
+.ocean-waves {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.light .ocean-waves {
+  background: radial-gradient(
+    circle at 50% 100%,
+    rgba(255, 127, 80, 0.2) 0%,
+    rgba(135, 206, 235, 0.1) 50%,
+    transparent 100%
+  );
+  animation: waves 8s ease-in-out infinite;
+}
+
+.dark .ocean-waves {
+  background: radial-gradient(
+    circle at 50% 100%,
+    rgba(30, 61, 89, 0.3) 0%,
+    rgba(0, 0, 51, 0.2) 50%,
+    transparent 100%
+  );
+  animation: waves 12s ease-in-out infinite;
+}
+
+@keyframes waves {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ocean-card {
+    @apply p-4;
+  }
+
+  .ocean-button {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .sequential-fade > * {
+    animation-delay: 0.1s;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .ocean-waves {
+    height: 50vh;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-sm;
+  }
+}
+
+/* High-performance mode for lower-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .ocean-waves {
+    animation: none;
+  }
+
+  .floating {
+    animation: none;
+  }
+
+  .ocean-card {
+    transform: none !important;
+    transition: none !important;
+  }
+}
