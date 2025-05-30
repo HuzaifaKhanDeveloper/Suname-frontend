@@ -400,11 +400,11 @@ const MusicPage = () => {
                     <motion.span
                       className="inline-block mr-2 text-2xl"
                       style={{
-                        color: isDarkMode ? '#FFFFFF' : '#333333',
+                        color: isDarkMode ? '#FFFFFF' : '#333333', // Default icon color
                       }}
                       whileHover={{
                         scale: 1.2,
-                        color: isDarkMode ? '#A78BFA' : '#F97316',
+                        color: isDarkMode ? '#A78BFA' : '#F97316', // Hover icon color
                       }}
                       transition={{
                         color: { duration: 0.4, ease: "easeOut" },
