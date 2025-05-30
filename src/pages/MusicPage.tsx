@@ -26,21 +26,25 @@ const MusicPage = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Close main more options dropdown if click is outside its ref
       if (mainMoreOptionsRef.current && !mainMoreOptionsRef.current.contains(event.target)) {
         setShowMoreOptions(false);
       }
-      Object.keys(trackOptionsRefs.current).forEach(id => {
-        if (trackOptionsRefs.current[id] && !trackOptionsRefs.current[id].contains(event.target)) {
+
+      // Close any open track options dropdown if click is outside its ref
+      // We only need to check the currently open one, as openTrackOptionsId holds only one ID.
+      if (openTrackOptionsId !== null && trackOptionsRefs.current[openTrackOptionsId]) {
+        if (!trackOptionsRefs.current[openTrackOptionsId].contains(event.target)) {
           setOpenTrackOptionsId(null);
         }
-      });
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [mainMoreOptionsRef, trackOptionsRefs]);
+  }, [mainMoreOptionsRef, trackOptionsRefs, openTrackOptionsId]); // Added openTrackOptionsId to dependencies
 
   const tracks = [
     {
@@ -135,6 +139,10 @@ const MusicPage = () => {
   ];
 
   const handleTrackClick = (trackId) => {
+    // Close any open track options when a track row is clicked
+    if (openTrackOptionsId !== null) {
+      setOpenTrackOptionsId(null);
+    }
     const track = tracks.find(t => t.id === trackId);
     if (track && track.soundCloudLink) {
       window.open(track.soundCloudLink, '_blank');
@@ -446,7 +454,7 @@ const MusicPage = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index, ease: "easeOut" }}
-                onClick={() => handleTrackClick(track.id)}
+                onClick={() => handleTrackClick(track.id)} // Modified to close dropdowns
                 whileHover={{
                   scale: 1.03,
                   y: -2,
@@ -491,7 +499,7 @@ const MusicPage = () => {
                   <div className="relative" ref={el => trackOptionsRefs.current[track.id] = el}>
                     <motion.button
                       onClick={(e) => {
-                        e.stopPropagation();
+                        e.stopPropagation(); // Prevent click from bubbling up to the track row
                         setOpenTrackOptionsId(openTrackOptionsId === track.id ? null : track.id);
                       }}
                       className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 transition-colors rounded-full flex items-center justify-center`}
