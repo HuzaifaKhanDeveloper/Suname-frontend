@@ -77,7 +77,7 @@ const MusicPage = () => {
       album: "Elixir",
       duration: "1:00:44",
       releaseDate: "8 months ago",
-      plays: "692,134",
+      plays: "29",
       genre: "Future Bass",
       imageUrl: "https://images.pexels.com/photos/1699161/pexels-photo-1699161.jpeg?auto=compress&cs=tinysrgb&w=800",
       soundCloudLink: "https://soundcloud.com/suname/urban-pulse",
