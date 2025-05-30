@@ -10,8 +10,8 @@ import {
   Eye,
   Link,
   ExternalLink,
-  Download,
-  ListPlus
+  ListPlus, // Icon for "Add to Playlist"
+  Flag // New icon for "Report"
 } from 'lucide-react';
 
 const MusicPage = () => {
@@ -177,13 +177,18 @@ const MusicPage = () => {
     window.open(randomLink, '_blank');
   };
 
-  const handleDownloadArtistInfo = () => {
-    alert('Downloading artist info (mock action)...');
+  const handleReportProfile = () => {
+    alert('Reporting artist profile (mock action)...');
     setShowMoreOptions(false);
   };
 
   const handleAddToPlaylist = (trackTitle) => {
     alert(`Adding "${trackTitle}" to playlist (mock action)...`);
+    setOpenTrackOptionsId(null);
+  };
+
+  const handleReportTrack = (trackTitle) => {
+    alert(`Reporting "${trackTitle}" (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
@@ -338,14 +343,14 @@ const MusicPage = () => {
                           Share
                         </motion.button>
                         <motion.button
-                          onClick={handleDownloadArtistInfo}
+                          onClick={handleReportProfile}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
                           whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.96 }}
                           transition={{ duration: 0.15, ease: "easeOut" }}
                         >
-                          <Download className="w-4 h-4" />
-                          Download Artist Info
+                          <Flag className="w-4 h-4" />
+                          Report Profile
                         </motion.button>
                       </motion.div>
                     )}
@@ -399,7 +404,7 @@ const MusicPage = () => {
                   scale: 1.03,
                   y: -2,
                   boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)',
-                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.7)' : 'rgba(243, 244, 246, 0.7)' // Subtle background change
+                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.7)' : 'rgba(243, 244, 246, 0.7)'
                 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -490,14 +495,14 @@ const MusicPage = () => {
                             Add to Playlist
                           </motion.button>
                           <motion.button
-                            onClick={() => alert(`Downloading "${track.title}" (mock action)...`)}
+                            onClick={() => handleReportTrack(track.title)}
                             className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
                             whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                             whileTap={{ scale: 0.96 }}
                             transition={{ duration: 0.15, ease: "easeOut" }}
                           >
-                            <Download className="w-4 h-4" />
-                            Download Track
+                            <Flag className="w-4 h-4" />
+                            Report Track
                           </motion.button>
                         </motion.div>
                       )}
