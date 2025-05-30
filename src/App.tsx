@@ -15,6 +15,7 @@ import InterviewsPage from './pages/InterviewsPage';
 import MixesPage from './pages/MixesPage';
 import EPKPage from './pages/EPKPage';
 import WaveEventsPage from './pages/WaveEventsPage';
+import MusicPage from './pages/MusicPage';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path="/tour" element={<TourPage />} />
           <Route path="/interviews" element={<InterviewsPage />} />
           <Route path="/mixes" element={<MixesPage />} />
+          <Route path="/music" element={<MusicPage />} />
           <Route path="/epk" element={<EPKPage />} />
           <Route path="/wave-events" element={<WaveEventsPage />} />
           <Route path="*" element={<NotFound />} />
