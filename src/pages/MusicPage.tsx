@@ -26,12 +26,10 @@ const MusicPage = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close main more options if clicked outside
       if (mainMoreOptionsRef.current && !mainMoreOptionsRef.current.contains(event.target)) {
         setShowMoreOptions(false);
       }
 
-      // Close track-specific options if clicked outside
       if (openTrackOptionsId !== null && trackOptionsRefs.current[openTrackOptionsId]) {
         if (!trackOptionsRefs.current[openTrackOptionsId].contains(event.target)) {
           setOpenTrackOptionsId(null);
@@ -162,15 +160,14 @@ const MusicPage = () => {
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
       setTimeout(() => setShowCopyMessage(false), 2000);
-      setShowMoreOptions(false); // Close main options menu after copy
-      setOpenTrackOptionsId(null); // Close track options menu after copy
+      setShowMoreOptions(false);
+      setOpenTrackOptionsId(null);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
   };
 
   const handleShare = async (linkToShare, title, text) => {
-    // Using Web Share API if available, otherwise fallback to copy link
     if (navigator.share) {
       try {
         await navigator.share({
@@ -181,15 +178,13 @@ const MusicPage = () => {
         console.log('Content shared successfully');
       } catch (error) {
         console.error('Error sharing:', error);
-        // Fallback to copying link if share fails or is cancelled
         handleCopyLink(linkToShare);
       }
     } else {
-      // Fallback for browsers that do not support Web Share API
       handleCopyLink(linkToShare);
     }
-    setShowMoreOptions(false); // Close main options menu after share/copy
-    setOpenTrackOptionsId(null); // Close track options menu after share/copy
+    setShowMoreOptions(false);
+    setOpenTrackOptionsId(null);
   };
 
   const handleListenInSoundCloud = () => {
@@ -212,7 +207,6 @@ const MusicPage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      // Use min-h-screen to ensure it takes full viewport height, add responsive padding
       className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
     >
       <AnimatePresence>
@@ -223,7 +217,6 @@ const MusicPage = () => {
             animate={{ y: 20, opacity: 1 }}
             exit={{ y: -80, opacity: 0 }}
             transition={{ duration: 0.5 }}
-            // Adjust position for smaller screens
             className={`fixed top-0 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-md shadow-lg font-semibold text-white bg-green-600 w-full max-w-xs sm:max-w-sm text-center`}
           >
             Link Copied!
@@ -245,7 +238,6 @@ const MusicPage = () => {
       />
 
       <motion.div
-        // Use responsive padding and margin adjustments
         className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-4 sm:px-6 mb-8`}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -257,7 +249,6 @@ const MusicPage = () => {
         whileTap={{ scale: 0.995 }}
       >
         <div className="max-w-7xl mx-auto">
-          {/* Flex direction for header section: column on small, row on large */}
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <motion.div
               className="relative group"
@@ -267,7 +258,6 @@ const MusicPage = () => {
               <img
                 src="https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=400"
                 alt="SUNAME"
-                // Adjust image size for different screens
                 className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-2xl object-cover"
               />
             </motion.div>
@@ -283,7 +273,6 @@ const MusicPage = () => {
               </motion.p>
 
               <motion.h1
-                // Adjust font size for different screens
                 className={`text-4xl sm:text-5xl lg:text-7xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -293,7 +282,6 @@ const MusicPage = () => {
               </motion.h1>
 
               <motion.div
-                // Allow wrapping on smaller screens, then stack on larger
                 className={`flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -314,7 +302,6 @@ const MusicPage = () => {
               </motion.div>
 
               <motion.div
-                // Stack buttons on small screens, then row on medium and up
                 className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -363,7 +350,6 @@ const MusicPage = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.8 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        // Position the dropdown for better mobile visibility
                         className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 mt-2 w-48 rounded-xl shadow-2xl py-2 z-10 border origin-top-right sm:origin-top-center overflow-hidden`}
                       >
                         <motion.button
@@ -393,7 +379,6 @@ const MusicPage = () => {
               </motion.div>
 
               <motion.div
-                // Allow social media links to wrap naturally on smaller screens
                 className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -476,7 +461,6 @@ const MusicPage = () => {
             {tracks.map((track, index) => (
               <motion.div
                 key={track.id}
-                // Flex direction on smaller screens, row on medium and up. Adjust gap and padding.
                 className={`group flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-3 sm:p-4 rounded-lg hover:${isDarkMode ? 'bg-gray-800/50' : 'bg-gray-100'} transition-all duration-200 cursor-pointer`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -499,7 +483,6 @@ const MusicPage = () => {
                 <motion.img
                   src={track.imageUrl}
                   alt={track.title}
-                  // Adjust image size for track list
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover flex-shrink-0"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
@@ -514,7 +497,6 @@ const MusicPage = () => {
                   </p>
                 </div>
 
-                {/* Hide plays on small screens, show on medium and up */}
                 <div className={`hidden sm:flex items-center gap-1 text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20 flex-shrink-0`}>
                   <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
                   {track.plays}
@@ -547,7 +529,6 @@ const MusicPage = () => {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
-                          // Position dropdown to the left on small screens
                           className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-20 border origin-top-right overflow-hidden`}
                         >
                           <motion.button
