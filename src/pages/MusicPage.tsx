@@ -114,7 +114,7 @@ const MusicPage = () => {
       title: "SUNDAY MIX - #003",
       artist: "SUNAME ",
       album: "Space Odyssey",
-      duration: "47:49",
+      duration: "47:47",
       releaseDate: "2024-07-01",
       plays: "6",
       genre: "Space Ambient",
