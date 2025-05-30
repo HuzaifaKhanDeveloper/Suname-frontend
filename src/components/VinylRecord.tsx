@@ -38,14 +38,14 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
           className="relative"
           style={{ width: vinylSize, height: vinylSize }}
           animate={{ 
-            rotate: 360, // Always rotate
+            rotate: 360, 
             scale: hover ? 1.05 : 1,
           }}
           transition={{ 
             rotate: {
               duration: 6,
               ease: "linear",
-              repeat: Infinity, // Always repeat
+              repeat: Infinity, 
             },
             scale: {
               duration: 0.3,
@@ -85,7 +85,7 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 borderStyle: 'solid',
                 borderColor: 'rgba(50, 50, 50, 0.6)',
               }}
-              animate={{ // Always animate grooves
+              animate={{ 
                 rotate: [0, 360],
                 scale: [1, 1.02, 1],
               }}
@@ -123,7 +123,7 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
-              animate={{ // Always animate album cover
+              animate={{ 
                 rotate: [0, 360],
               }}
               transition={{
@@ -142,8 +142,8 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 height: `${holeSIze}px`,
               }}
               animate={{
-                scale: [1, 1.2, 1], // Always pulse
-                opacity: [0.8, 1, 0.8], // Always change opacity
+                scale: [1, 1.2, 1],
+                opacity: [0.8, 1, 0.8], 
               }}
               transition={{
                 duration: 1,
