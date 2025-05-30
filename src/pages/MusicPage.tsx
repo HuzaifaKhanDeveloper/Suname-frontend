@@ -10,9 +10,10 @@ import {
   Eye,
   Link,
   ExternalLink,
-  ListPlus, // Icon for "Add to Playlist"
-  Flag // New icon for "Report"
+  ListPlus,
+  Flag
 } from 'lucide-react';
+import { FaSoundcloud, FaInstagram, FaTwitter, FaTiktok, FaYoutube, FaSpotify, FaApple } from 'react-icons/fa';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
@@ -271,11 +272,56 @@ const MusicPage = () => {
                 </span>
               </motion.div>
 
+              {/* Social Media Icons */}
+              <motion.div
+                className="flex justify-center lg:justify-start space-x-4 mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, ease: "easeOut" }}
+              >
+                {[
+                  { icon: FaSoundcloud, url: biography.socials.soundcloud },
+                  { icon: FaInstagram, url: biography.socials.instagram },
+                  { icon: FaTwitter, url: biography.socials.twitter },
+                  { icon: FaTiktok, url: biography.socials.tiktok },
+                  { icon: FaYoutube, url: biography.socials.youtube },
+                  { icon: FaSpotify, url: biography.socials.spotify },
+                  { icon: FaApple, url: biography.socials.appleMusic }
+                ].map(({ icon: Icon, url }, index) => (
+                  <motion.a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-3xl md:text-4xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index + 0.5, ease: "easeOut" }}
+                  >
+                    <motion.span
+                      className="inline-block"
+                      style={{ color: isDarkMode ? '#CBD5E0' : '#4A5568' }}
+                      whileHover={{
+                        scale: 1.2,
+                        color: isDarkMode ? '#8B5CF6' : '#FF7043',
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{
+                        color: { duration: 0.2, ease: "easeOut" },
+                        scale: { type: "spring", stiffness: 400, damping: 30 }
+                      }}
+                    >
+                      <Icon />
+                    </motion.span>
+                  </motion.a>
+                ))}
+              </motion.div>
+
               <motion.div
                 className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, ease: "easeOut" }}
+                transition={{ delay: 0.6, ease: "easeOut" }} {/* Adjusted delay */}
               >
                 <motion.button
                   onClick={handleFollowToggle}
