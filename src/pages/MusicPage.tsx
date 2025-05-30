@@ -75,7 +75,7 @@ const MusicPage = () => {
       title: "Elixr Set (Open)",
       artist: "SUNAME",
       album: "Elixir",
-      duration: "3:56",
+      duration: "1:00:44",
       releaseDate: "2024-10-10",
       plays: "692,134",
       genre: "Future Bass",
