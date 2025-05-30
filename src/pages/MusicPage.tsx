@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { biography } from '../data/biography';
-import { 
-  Play, 
-  Pause, 
-  Heart, 
-  Share2, 
-  Download, 
+import { biography } from '../data/biography'; // Assuming this import is correct and needed elsewhere
+
+import {
+  Play,
+  Pause,
+  Heart,
+  Share2,
+  Download,
   MoreHorizontal,
   Clock,
   Calendar,
@@ -44,7 +45,7 @@ const MusicPage = () => {
 
   const soundCloudLinks = [
     "https://soundcloud.com/suname/midnight-echoes",
-    "https://soundcloud.com/suname/neon-dreams", 
+    "https://soundcloud.com/suname/neon-dreams",
     "https://soundcloud.com/suname/urban-pulse",
     "https://soundcloud.com/suname/ethereal-waves",
     "https://soundcloud.com/suname/digital-rain",
@@ -173,7 +174,7 @@ const MusicPage = () => {
       />
 
       {/* Header */}
-      <motion.div 
+      <motion.div
         className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-6 mb-8`}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -211,7 +212,7 @@ const MusicPage = () => {
               >
                 VERIFIED ARTIST
               </motion.p>
-              
+
               <motion.h1
                 className={`text-5xl lg:text-7xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}
                 initial={{ opacity: 0, y: 30 }}
@@ -220,7 +221,7 @@ const MusicPage = () => {
               >
                 SUNAME
               </motion.h1>
-              
+
               <motion.div
                 className={`flex flex-wrap justify-center lg:justify-start gap-6 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -255,7 +256,7 @@ const MusicPage = () => {
                   <Play className="w-5 h-5" />
                   Play
                 </motion.button>
-                
+
                 <motion.button
                   className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold transition-colors`}
                   whileHover={{ scale: 1.05 }}
@@ -263,7 +264,7 @@ const MusicPage = () => {
                 >
                   Follow
                 </motion.button>
-                
+
                 <motion.button
                   className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors`}
                   whileHover={{ scale: 1.1 }}
@@ -351,8 +352,8 @@ const MusicPage = () => {
                     <motion.div
                       key={i}
                       className={`w-1 bg-gradient-to-t ${
-                        activeTrack === track.id 
-                          ? 'from-green-500 to-green-300' 
+                        activeTrack === track.id
+                          ? 'from-green-500 to-green-300'
                           : isDarkMode ? 'from-gray-700 to-gray-600' : 'from-gray-400 to-gray-300'
                       } rounded-full`}
                       style={{
@@ -389,11 +390,11 @@ const MusicPage = () => {
                       } transition-colors`}
                     />
                   </motion.button>
-                  
+
                   <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12`}>
                     {track.duration}
                   </span>
-                  
+
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -430,8 +431,8 @@ const MusicPage = () => {
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} truncate`}>
                       {tracks.find(t => t.id === activeTrack)?.artist}
                     </p>
+                    <Heart className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'} ml-2`} />
                   </div>
-                  <Heart className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'} ml-2`} />
                 </div>
 
                 {/* Controls */}
