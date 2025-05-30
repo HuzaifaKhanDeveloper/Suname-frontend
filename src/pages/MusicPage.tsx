@@ -377,49 +377,49 @@ const MusicPage = () => {
                   </AnimatePresence>
                 </div>
               </motion.div>
-            </div>
 
-            {/* Social Media Icons - Moved to right hand side and styled as buttons */}
-            <motion.div
-              className="flex flex-col justify-center items-center lg:items-end space-y-4 mt-6 lg:mt-0 lg:ml-auto"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45, ease: "easeOut" }}
-            >
-              {socialMediaLinks.map(({ icon: Icon, url, name }, index) => (
-                <motion.a
-                  key={url}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
-                    ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
-                  `}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <motion.span
-                    className="inline-block mr-2 text-2xl"
-                    style={{
-                      color: isDarkMode ? '#FFFFFF' : '#333333',
-                    }}
-                    whileHover={{
-                      scale: 1.2,
-                      color: isDarkMode ? '#A78BFA' : '#F97316',
-                    }}
-                    transition={{
-                      color: { duration: 0.4, ease: "easeOut" },
-                      scale: { type: "spring", stiffness: 400, damping: 30 }
-                    }}
+              {/* Social Media Icons - Moved inside the flex-1 div and styled as buttons */}
+              <motion.div
+                className="flex flex-wrap justify-center lg:justify-start gap-4 mt-6" // Adjusted classes for better alignment
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, ease: "easeOut" }}
+              >
+                {socialMediaLinks.map(({ icon: Icon, url, name }, index) => (
+                  <motion.a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
+                      ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
+                    `}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <Icon />
-                  </motion.span>
-                  <span className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                    {name}
-                  </span>
-                </motion.a>
-              ))}
-            </motion.div>
+                    <motion.span
+                      className="inline-block mr-2 text-2xl"
+                      style={{
+                        color: isDarkMode ? '#FFFFFF' : '#333333',
+                      }}
+                      whileHover={{
+                        scale: 1.2,
+                        color: isDarkMode ? '#A78BFA' : '#F97316',
+                      }}
+                      transition={{
+                        color: { duration: 0.4, ease: "easeOut" },
+                        scale: { type: "spring", stiffness: 400, damping: 30 }
+                      }}
+                    >
+                      <Icon />
+                    </motion.span>
+                    <span className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                      {name}
+                    </span>
+                  </motion.a>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
       </motion.div>
