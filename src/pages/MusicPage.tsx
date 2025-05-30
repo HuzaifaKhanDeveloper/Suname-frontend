@@ -528,36 +528,6 @@ const MusicPage = () => {
                             <Link className="w-4 h-4" />
                             Copy Track Link
                           </motion.button>
-                          <motion.button
-                            onClick={() => handleShare(track.soundCloudLink, `Listen to "${track.title}" by ${track.artist}`, `Check out "${track.title}" by ${track.artist} on SoundCloud!`)}
-                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                            whileTap={{ scale: 0.96 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
-                          >
-                            <Share2 className="w-4 h-4" />
-                            Share Track
-                          </motion.button>
-                          <motion.button
-                            onClick={() => handleAddToPlaylist(track.title)}
-                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                            whileTap={{ scale: 0.96 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
-                          >
-                            <ListPlus className="w-4 h-4" />
-                            Add to Playlist
-                          </motion.button>
-                          <motion.button
-                            onClick={() => handleReportTrack(track.title)}
-                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                            whileTap={{ scale: 0.96 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
-                          >
-                            <Flag className="w-4 h-4" />
-                            Report Track
-                          </motion.button>
                         </motion.div>
                       )}
                     </AnimatePresence>
