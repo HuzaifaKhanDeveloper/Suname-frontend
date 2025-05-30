@@ -111,10 +111,10 @@ const MusicPage = () => {
     },
     {
       id: 6,
-      title: "Cosmic Drift",
-      artist: "SUNAME x Stellar",
+      title: "SUNDAY MIX - #003",
+      artist: "SUNAME ",
       album: "Space Odyssey",
-      duration: "6:42",
+      duration: "1:00:49",
       releaseDate: "2024-07-01",
       plays: "523,847",
       genre: "Space Ambient",
