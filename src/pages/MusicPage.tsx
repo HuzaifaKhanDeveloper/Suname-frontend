@@ -79,7 +79,7 @@ const MusicPage = () => {
       releaseDate: "8 months ago",
       plays: "29",
       genre: "Future Bass",
-      imageUrl: "https://images.pexels.com/photos/1699161/pexels-photo-1699161.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
       soundCloudLink: "https://soundcloud.com/suname/urban-pulse",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2)
     },
@@ -92,7 +92,7 @@ const MusicPage = () => {
       releaseDate: "2024-09-22",
       plays: "434,921",
       genre: "Ambient",
-      imageUrl: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
       soundCloudLink: "https://soundcloud.com/suname/ethereal-waves",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5)
     },
@@ -105,7 +105,7 @@ const MusicPage = () => {
       releaseDate: "2024-08-14",
       plays: "1,847,293",
       genre: "Cyberpunk",
-      imageUrl: "https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
       soundCloudLink: "https://soundcloud.com/suname/digital-rain",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3)
     },
@@ -118,7 +118,7 @@ const MusicPage = () => {
       releaseDate: "2024-07-01",
       plays: "523,847",
       genre: "Space Ambient",
-      imageUrl: "https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
       soundCloudLink: "https://soundcloud.com/suname/cosmic-drift"
       ,waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
     }
