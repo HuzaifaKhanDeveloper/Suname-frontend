@@ -9,26 +9,23 @@ import {
   Music,
   Eye,
   Link,
-  ExternalLink // Added ExternalLink icon for SoundCloud button
+  ExternalLink
 } from 'lucide-react';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
   const [isFollowing, setIsFollowing] = useState(false);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
-  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for main header dropdown
-  const [openTrackOptionsId, setOpenTrackOptionsId] = useState(null); // State for track-specific dropdown
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [openTrackOptionsId, setOpenTrackOptionsId] = useState(null);
   const mainMoreOptionsRef = useRef(null);
-  const trackOptionsRefs = useRef({}); // Ref for each track's dropdown
+  const trackOptionsRefs = useRef({});
 
-  // Effect to close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close main dropdown
       if (mainMoreOptionsRef.current && !mainMoreOptionsRef.current.contains(event.target)) {
         setShowMoreOptions(false);
       }
-      // Close track-specific dropdowns
       Object.keys(trackOptionsRefs.current).forEach(id => {
         if (trackOptionsRefs.current[id] && !trackOptionsRefs.current[id].contains(event.target)) {
           setOpenTrackOptionsId(null);
@@ -42,8 +39,6 @@ const MusicPage = () => {
     };
   }, [mainMoreOptionsRef, trackOptionsRefs]);
 
-
-  // Removed the general soundCloudLinks array as tracks will now have specific links
   const tracks = [
     {
       id: 1,
@@ -55,7 +50,7 @@ const MusicPage = () => {
       plays: "847,592",
       genre: "Electronic",
       imageUrl: "https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes", // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.1) * 0.5 + Math.random() * 0.3)
     },
     {
@@ -68,7 +63,7 @@ const MusicPage = () => {
       plays: "1,203,847",
       genre: "Synthwave",
       imageUrl: "https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/neon-dreams", // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/neon-dreams",
       waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.15) * 0.4 + Math.random() * 0.4)
     },
     {
@@ -81,7 +76,7 @@ const MusicPage = () => {
       plays: "692,134",
       genre: "Future Bass",
       imageUrl: "https://images.pexels.com/photos/1699161/pexels-photo-1699161.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/urban-pulse", // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/urban-pulse",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2)
     },
     {
@@ -94,7 +89,7 @@ const MusicPage = () => {
       plays: "434,921",
       genre: "Ambient",
       imageUrl: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves", // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5)
     },
     {
@@ -107,7 +102,7 @@ const MusicPage = () => {
       plays: "1,847,293",
       genre: "Cyberpunk",
       imageUrl: "https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/digital-rain", // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/digital-rain",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3)
     },
     {
@@ -120,13 +115,12 @@ const MusicPage = () => {
       plays: "523,847",
       genre: "Space Ambient",
       imageUrl: "https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/cosmic-drift" // Specific link
+      soundCloudLink: "https://soundcloud.com/suname/cosmic-drift"
       ,waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
     }
   ];
 
   const handleTrackClick = (trackId) => {
-    // Opens the SoundCloud link directly for the clicked track (if available)
     const track = tracks.find(t => t.id === trackId);
     if (track && track.soundCloudLink) {
       window.open(track.soundCloudLink, '_blank');
@@ -148,9 +142,9 @@ const MusicPage = () => {
       document.execCommand('copy');
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
-      setTimeout(() => setShowCopyMessage(false), 2000); // Hide message after 2 seconds
-      setShowMoreOptions(false); // Close main dropdown
-      setOpenTrackOptionsId(null); // Close track dropdown
+      setTimeout(() => setShowCopyMessage(false), 2000);
+      setShowMoreOptions(false);
+      setOpenTrackOptionsId(null);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -167,16 +161,15 @@ const MusicPage = () => {
             await navigator.share(shareData);
         } else {
             console.log('Web Share API not supported. Copying link instead.');
-            handleCopyLink(linkToShare); // Fallback to copy link
+            handleCopyLink(linkToShare);
         }
-        setShowMoreOptions(false); // Close main dropdown
-        setOpenTrackOptionsId(null); // Close track dropdown
+        setShowMoreOptions(false);
+        setOpenTrackOptionsId(null);
     } catch (err) {
         console.error('Error sharing:', err);
     }
   };
 
-  // Function to open a random SoundCloud link (used for main button)
   const handleListenInSoundCloud = () => {
     const randomLink = tracks[Math.floor(Math.random() * tracks.length)].soundCloudLink;
     window.open(randomLink, '_blank');
@@ -188,7 +181,6 @@ const MusicPage = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen pt-24 pb-12 px-4 relative overflow-hidden"
     >
-      {/* Your Original Animated Background */}
       <motion.div
         className="absolute inset-0 -z-10"
         animate={{
@@ -202,7 +194,6 @@ const MusicPage = () => {
         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Header */}
       <motion.div
         className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-6 mb-8`}
         initial={{ y: -50, opacity: 0 }}
@@ -214,14 +205,13 @@ const MusicPage = () => {
             <motion.div
               className="relative group"
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
                 src="https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=400"
                 alt="SUNAME"
                 className="w-64 h-64 rounded-2xl shadow-2xl object-cover"
               />
-              {/* Removed play button overlay */}
             </motion.div>
 
             <div className="flex-1 text-center lg:text-left">
@@ -229,7 +219,7 @@ const MusicPage = () => {
                 className={`text-sm font-medium ${isDarkMode ? 'text-purple-300' : 'text-purple-600'} mb-2`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.2, ease: "easeOut" }}
               >
                 VERIFIED ARTIST
               </motion.p>
@@ -238,7 +228,7 @@ const MusicPage = () => {
                 className={`text-5xl lg:text-7xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.3, ease: "easeOut" }}
               >
                 SUNAME
               </motion.h1>
@@ -247,15 +237,14 @@ const MusicPage = () => {
                 className={`flex flex-wrap justify-center lg:justify-start gap-6 text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.4, ease: "easeOut" }}
               >
                 <span className="flex items-center gap-1">
                   <Headphones className="w-4 h-4" />
                   4.2M monthly listeners
                 </span>
-                {/* Removed Heart icon and follower count */}
                 <span className="flex items-center gap-1">
-                  <Eye className="w-4 h-4" /> {/* Added Eye icon for views */}
+                  <Eye className="w-4 h-4" />
                   1.5M views
                 </span>
                 <span className="flex items-center gap-1">
@@ -265,12 +254,11 @@ const MusicPage = () => {
               </motion.div>
 
               <motion.div
-                className="flex justify-center lg:justify-start gap-4 mt-6"
+                className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.5, ease: "easeOut" }}
               >
-                {/* Follow/Following Button */}
                 <motion.button
                   onClick={handleFollowToggle}
                   className={`${isFollowing ? 'bg-purple-600 text-white shadow-lg' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white hover:shadow-md' : 'border-gray-400 text-gray-600 hover:text-gray-900 hover:shadow-md'} border-2 px-6 py-3 rounded-full font-semibold`}
@@ -285,7 +273,6 @@ const MusicPage = () => {
                   {isFollowing ? 'Following' : 'Follow'}
                 </motion.button>
 
-                {/* Listen in SoundCloud button */}
                 <motion.button
                   onClick={handleListenInSoundCloud}
                   className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 shadow-md`}
@@ -297,7 +284,6 @@ const MusicPage = () => {
                   Listen in SoundCloud
                 </motion.button>
 
-                {/* Main More Options Dropdown */}
                 <div className="relative" ref={mainMoreOptionsRef}>
                   <motion.button
                     onClick={() => setShowMoreOptions(prev => !prev)}
@@ -312,18 +298,18 @@ const MusicPage = () => {
                   <AnimatePresence>
                     {showMoreOptions && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
                         className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-10 border origin-top-right overflow-hidden`}
                       >
                         <motion.button
                           onClick={() => handleCopyLink(window.location.href)}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                          whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.97 }}
-                          transition={{ duration: 0.15 }}
+                          transition={{ duration: 0.15, ease: "easeOut" }}
                         >
                           <Link className="w-4 h-4" />
                           Copy Link
@@ -331,9 +317,9 @@ const MusicPage = () => {
                         <motion.button
                           onClick={() => handleShare(window.location.href, 'Check out this music page!', 'Listen to amazing tracks by SUNAME.')}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                          whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.97 }}
-                          transition={{ duration: 0.15 }}
+                          transition={{ duration: 0.15, ease: "easeOut" }}
                         >
                           <Share2 className="w-4 h-4" />
                           Share
@@ -360,19 +346,18 @@ const MusicPage = () => {
         </div>
       </motion.div>
 
-      {/* Track List */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <motion.div
           className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl p-8`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.4, ease: "easeOut" }}
         >
         <motion.div
           className="mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.6, ease: "easeOut" }}
         >
           <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-6`}>
             Popular
@@ -382,30 +367,27 @@ const MusicPage = () => {
             {tracks.map((track, index) => (
               <motion.div
                 key={track.id}
-                className={`group flex items-center gap-4 p-4 rounded-lg hover:${isDarkMode ? 'bg-gray-800/50' : 'bg-gray-100'} transition-all duration-200 cursor-pointer`}
+                className={`group flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg hover:${isDarkMode ? 'bg-gray-800/50' : 'bg-gray-100'} transition-all duration-200 cursor-pointer`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * index }}
-                onClick={() => handleTrackClick(track.id)} // Open track's SoundCloud link on click
+                transition={{ delay: 0.1 * index, ease: "easeOut" }}
+                onClick={() => handleTrackClick(track.id)}
                 whileHover={{ scale: 1.03, y: -2, boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)' }}
                 whileTap={{ scale: 0.97 }}
               >
-                {/* Track Number */}
-                <div className="w-8 flex justify-center">
+                <div className="w-8 flex-shrink-0 flex justify-center">
                   <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     {index + 1}
                   </span>
                 </div>
 
-                {/* Track Image */}
                 <img
                   src={track.imageUrl}
                   alt={track.title}
-                  className="w-12 h-12 rounded object-cover"
+                  className="w-12 h-12 rounded object-cover flex-shrink-0"
                 />
 
-                {/* Track Info */}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 text-center sm:text-left">
                   <h3 className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}>
                     {track.title}
                   </h3>
@@ -414,26 +396,20 @@ const MusicPage = () => {
                   </p>
                 </div>
 
-                {/* Removed Waveform Visualization */}
-
-                {/* Play Count with Eye icon */}
-                <div className={`hidden md:flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20`}>
+                <div className={`hidden md:flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20 flex-shrink-0`}>
                   <Eye className="w-4 h-4" />
                   {track.plays}
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center gap-2">
-                  {/* Removed Heart button */}
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12`}>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12 text-right sm:text-left`}>
                     {track.duration}
                   </span>
 
-                  {/* Track-specific More Options Dropdown */}
                   <div className="relative" ref={el => trackOptionsRefs.current[track.id] = el}>
                     <motion.button
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent track click from opening SoundCloud link
+                        e.stopPropagation();
                         setOpenTrackOptionsId(openTrackOptionsId === track.id ? null : track.id);
                       }}
                       className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 transition-colors rounded-full flex items-center justify-center`}
@@ -447,18 +423,18 @@ const MusicPage = () => {
                     <AnimatePresence>
                       {openTrackOptionsId === track.id && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
                           className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-20 border origin-top-right overflow-hidden`}
                         >
                           <motion.button
                             onClick={() => handleCopyLink(track.soundCloudLink)}
                             className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                            whileTap={{ scale: 0.97 }}
-                            transition={{ duration: 0.15 }}
+                            whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
                           >
                             <Link className="w-4 h-4" />
                             Copy Track Link
@@ -466,14 +442,13 @@ const MusicPage = () => {
                           <motion.button
                             onClick={() => handleShare(track.soundCloudLink, `Listen to "${track.title}" by ${track.artist}`, `Check out "${track.title}" by ${track.artist} on SoundCloud!`)}
                             className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                            whileTap={{ scale: 0.97 }}
-                            transition={{ duration: 0.15 }}
+                            whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
                           >
                             <Share2 className="w-4 h-4" />
                             Share Track
                           </motion.button>
-                          {/* Add more options like "Add to Playlist" if needed */}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -484,8 +459,6 @@ const MusicPage = () => {
           </div>
         </motion.div>
         </motion.div>
-
-        {/* Removed Player Controls */}
       </div>
     </motion.div>
   );
