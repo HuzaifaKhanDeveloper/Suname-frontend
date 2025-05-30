@@ -293,7 +293,7 @@ const MusicPage = () => {
                 </span>
                 <span className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
-                  1.5M views
+                  6.5K views
                 </span>
                 <span className="flex items-center gap-1">
                   <Music className="w-4 h-4" />
