@@ -54,8 +54,8 @@ const MusicPage = () => {
       plays: "847,592",
       genre: "Electronic",
       imageUrl: "https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.1) * 0.5 + Math.random() * 0.3)
+      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.1) * 0.5 + Math.random() * 0.3),
+      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes"
     },
     {
       id: 2,
@@ -67,8 +67,8 @@ const MusicPage = () => {
       plays: "1,203,847",
       genre: "Synthwave",
       imageUrl: "https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/neon-dreams",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.15) * 0.4 + Math.random() * 0.4)
+      waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.15) * 0.4 + Math.random() * 0.4),
+      soundCloudLink: "https://soundcloud.com/suname/neon-dreams"
     },
     {
       id: 3,
@@ -80,8 +80,8 @@ const MusicPage = () => {
       plays: "692,134",
       genre: "Future Bass",
       imageUrl: "https://images.pexels.com/photos/1699161/pexels-photo-1699161.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/urban-pulse",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2)
+      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2),
+      soundCloudLink: "https://soundcloud.com/suname/urban-pulse"
     },
     {
       id: 4,
@@ -93,8 +93,8 @@ const MusicPage = () => {
       plays: "434,921",
       genre: "Ambient",
       imageUrl: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5)
+      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5),
+      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves"
     },
     {
       id: 5,
@@ -106,8 +106,8 @@ const MusicPage = () => {
       plays: "1,847,293",
       genre: "Cyberpunk",
       imageUrl: "https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/digital-rain",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3)
+      waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3),
+      soundCloudLink: "https://soundcloud.com/suname/digital-rain"
     },
     {
       id: 6,
@@ -119,8 +119,8 @@ const MusicPage = () => {
       plays: "523,847",
       genre: "Space Ambient",
       imageUrl: "https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=800",
+      waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4),
       soundCloudLink: "https://soundcloud.com/suname/cosmic-drift"
-      ,waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
     }
   ];
 
@@ -231,15 +231,17 @@ const MusicPage = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         whileHover={{
           scale: 1.005,
-          boxShadow: isDarkMode ? '0 15px 30px rgba(0,0,0,0.6)' : '0 15px 30px rgba(0,0,0,0.2)'
+          rotateX: 1, // Added subtle 3D rotation
+          rotateY: 1, // Added subtle 3D rotation
+          boxShadow: isDarkMode ? '0 18px 36px rgba(0,0,0,0.7)' : '0 18px 36px rgba(0,0,0,0.3)'
         }}
-        whileTap={{ scale: 0.995 }}
+        whileTap={{ scale: 0.995, rotateX: 0, rotateY: 0 }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <motion.div
               className="relative group"
-              whileHover={{ scale: 1.05, rotateZ: 2 }}
+              whileHover={{ scale: 1.05, rotateZ: 2, filter: 'brightness(1.1)' }} // Added brightness filter
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
@@ -456,22 +458,27 @@ const MusicPage = () => {
                 whileHover={{
                   scale: 1.03,
                   y: -2,
+                  rotateZ: 0.5, // Added subtle rotation
                   boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)',
                   backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.7)' : 'rgba(243, 244, 246, 0.7)'
                 }}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.97, rotateZ: 0 }} // Reset rotation on tap
               >
                 <div className="w-8 flex-shrink-0 flex justify-center">
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <motion.span
+                    className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}
+                    whileHover={{ scale: 1.2, color: isDarkMode ? '#A78BFA' : '#F97316' }} // Scale and color change on hover
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     {index + 1}
-                  </span>
+                  </motion.span>
                 </div>
 
                 <motion.img
                   src={track.imageUrl}
                   alt={track.title}
                   className="w-12 h-12 rounded object-cover flex-shrink-0"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileHover={{ scale: 1.1, rotate: 5, filter: 'brightness(1.2)' }} // Added brightness filter
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 />
 
