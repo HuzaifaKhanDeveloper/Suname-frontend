@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
 import {
-  Heart,
   Share2,
   Download,
   MoreHorizontal,
@@ -13,7 +12,8 @@ import {
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
-  const [likedTracks, setLikedTracks] = useState(new Set());
+  // Removed likedTracks state as heart/like functionality is being removed
+  // const [likedTracks, setLikedTracks] = useState(new Set());
 
   const soundCloudLinks = [
     "https://soundcloud.com/suname/midnight-echoes",
@@ -105,15 +105,16 @@ const MusicPage = () => {
     window.open(randomLink, '_blank');
   };
 
-  const toggleLike = (trackId) => {
-    const newLiked = new Set(likedTracks);
-    if (newLiked.has(trackId)) {
-      newLiked.delete(trackId);
-    } else {
-      newLiked.add(trackId);
-    }
-    setLikedTracks(newLiked);
-  };
+  // Removed toggleLike function as heart/like functionality is being removed
+  // const toggleLike = (trackId) => {
+  //   const newLiked = new Set(likedTracks);
+  //   if (newLiked.has(trackId)) {
+  //     newLiked.delete(trackId);
+  //   } else {
+  //     newLiked.add(trackId);
+  //   }
+  //   setLikedTracks(newLiked);
+  // };
 
   return (
     <motion.div
@@ -186,10 +187,7 @@ const MusicPage = () => {
                   <Headphones className="w-4 h-4" />
                   4.2M monthly listeners
                 </span>
-                <span className="flex items-center gap-1">
-                  <Heart className="w-4 h-4" />
-                  847K followers
-                </span>
+                {/* Removed Heart icon and follower count */}
                 <span className="flex items-center gap-1">
                   <Music className="w-4 h-4" />
                   Electronic • Synthwave
@@ -287,23 +285,7 @@ const MusicPage = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-2">
-                  <motion.button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleLike(track.id);
-                    }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Heart
-                      className={`w-5 h-5 ${
-                        likedTracks.has(track.id)
-                          ? 'text-green-500 fill-green-500'
-                          : isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'
-                      } transition-colors`}
-                    />
-                  </motion.button>
-
+                  {/* Removed Heart button */}
                   <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12`}>
                     {track.duration}
                   </span>
