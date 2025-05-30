@@ -179,17 +179,23 @@ const MusicPage = () => {
   };
 
   const handleReportProfile = () => {
-    alert('Reporting artist profile (mock action)...');
+    // In a real application, you'd replace this with a custom modal or toast notification
+    // instead of alert().
+    console.log('Reporting artist profile (mock action)...');
     setShowMoreOptions(false);
   };
 
   const handleAddToPlaylist = (trackTitle) => {
-    alert(`Adding "${trackTitle}" to playlist (mock action)...`);
+    // In a real application, you'd replace this with a custom modal or toast notification
+    // instead of alert().
+    console.log(`Adding "${trackTitle}" to playlist (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
   const handleReportTrack = (trackTitle) => {
-    alert(`Reporting "${trackTitle}" (mock action)...`);
+    // In a real application, you'd replace this with a custom modal or toast notification
+    // instead of alert().
+    console.log(`Reporting "${trackTitle}" (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
@@ -406,8 +412,8 @@ const MusicPage = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                )}
-              </AnimatePresence>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
