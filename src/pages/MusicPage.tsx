@@ -123,6 +123,17 @@ const MusicPage = () => {
     }
   ];
 
+  // Define social media links with names for display
+  const socialMediaLinks = [
+    { icon: FaSoundcloud, url: biography.socials.soundcloud, name: 'SoundCloud' },
+    { icon: FaInstagram, url: biography.socials.instagram, name: 'Instagram' },
+    { icon: FaTwitter, url: biography.socials.twitter, name: 'Twitter' },
+    { icon: FaTiktok, url: biography.socials.tiktok, name: 'TikTok' },
+    { icon: FaYoutube, url: biography.socials.youtube, name: 'YouTube' },
+    { icon: FaSpotify, url: biography.socials.spotify, name: 'Spotify' },
+    { icon: FaApple, url: biography.socials.appleMusic, name: 'Apple Music' }
+  ];
+
   const handleTrackClick = (trackId) => {
     const track = tracks.find(t => t.id === trackId);
     if (track && track.soundCloudLink) {
@@ -180,21 +191,18 @@ const MusicPage = () => {
 
   const handleReportProfile = () => {
     // In a real application, you'd replace this with a custom modal or toast notification
-    // instead of alert().
     console.log('Reporting artist profile (mock action)...');
     setShowMoreOptions(false);
   };
 
   const handleAddToPlaylist = (trackTitle) => {
     // In a real application, you'd replace this with a custom modal or toast notification
-    // instead of alert().
     console.log(`Adding "${trackTitle}" to playlist (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
   const handleReportTrack = (trackTitle) => {
     // In a real application, you'd replace this with a custom modal or toast notification
-    // instead of alert().
     console.log(`Reporting "${trackTitle}" (mock action)...`);
     setOpenTrackOptionsId(null);
   };
@@ -371,45 +379,44 @@ const MusicPage = () => {
               </motion.div>
             </div>
 
-            {/* Social Media Icons - Moved to right hand side */}
+            {/* Social Media Icons - Moved to right hand side and styled as buttons */}
             <motion.div
-              className="flex flex-col justify-center items-center lg:items-end space-y-4 mt-6 lg:mt-0 lg:ml-auto" // Added lg:ml-auto to push to right
+              className="flex flex-col justify-center items-center lg:items-end space-y-4 mt-6 lg:mt-0 lg:ml-auto"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45, ease: "easeOut" }}
             >
-              {[
-                { icon: FaSoundcloud, url: biography.socials.soundcloud },
-                { icon: FaInstagram, url: biography.socials.instagram },
-                { icon: FaTwitter, url: biography.socials.twitter },
-                { icon: FaTiktok, url: biography.socials.tiktok },
-                { icon: FaYoutube, url: biography.socials.youtube },
-                { icon: FaSpotify, url: biography.socials.spotify },
-                { icon: FaApple, url: biography.socials.appleMusic }
-              ].map(({ icon: Icon, url }, index) => (
+              {socialMediaLinks.map(({ icon: Icon, url, name }, index) => (
                 <motion.a
                   key={url}
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-3xl md:text-4xl"
-                  // Removed initial and animate from here, parent motion.div handles entry animation
+                  className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
+                    ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
+                  `}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <motion.span
-                    className="inline-block"
-                    style={{ color: isDarkMode ? '#CBD5E0' : '#4A5568' }}
+                    className="inline-block mr-2 text-2xl"
+                    style={{
+                      color: isDarkMode ? '#FFFFFF' : '#333333',
+                    }}
                     whileHover={{
                       scale: 1.2,
-                      color: isDarkMode ? '#8B5CF6' : '#FF7043',
+                      color: isDarkMode ? '#A78BFA' : '#F97316',
                     }}
-                    whileTap={{ scale: 0.9 }}
                     transition={{
-                      color: { duration: 0.2, ease: "easeOut" },
+                      color: { duration: 0.4, ease: "easeOut" },
                       scale: { type: "spring", stiffness: 400, damping: 30 }
                     }}
                   >
                     <Icon />
                   </motion.span>
+                  <span className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                    {name}
+                  </span>
                 </motion.a>
               ))}
             </motion.div>
