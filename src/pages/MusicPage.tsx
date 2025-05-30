@@ -394,8 +394,14 @@ const MusicPage = () => {
                     className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
                       ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
                     `}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{
+                      scale: 1.05,
+                      y: -3, // Subtle lift
+                      rotate: 2, // Slight rotation
+                      boxShadow: isDarkMode ? '0 8px 16px rgba(0,0,0,0.4)' : '0 8px 16px rgba(0,0,0,0.2)',
+                      backgroundColor: isDarkMode ? '#374151' : '#E5E7EB' // Slightly darker/lighter background on hover
+                    }}
+                    whileTap={{ scale: 0.95, y: 0, rotate: 0 }} // Reset on tap
                   >
                     <motion.span
                       className="inline-block mr-2 text-2xl"
@@ -404,11 +410,13 @@ const MusicPage = () => {
                       }}
                       whileHover={{
                         scale: 1.2,
+                        rotate: 15, // Rotate icon on hover
                         color: isDarkMode ? '#A78BFA' : '#F97316', // Hover icon color
                       }}
                       transition={{
                         color: { duration: 0.4, ease: "easeOut" },
-                        scale: { type: "spring", stiffness: 400, damping: 30 }
+                        scale: { type: "spring", stiffness: 400, damping: 30 },
+                        rotate: { duration: 0.3, ease: "easeOut" }
                       }}
                     >
                       <Icon />
