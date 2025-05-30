@@ -90,10 +90,10 @@ const MusicPage = () => {
       album: "Ambient Sessions",
       duration: "1:00:49",
       releaseDate: "2024-09-22",
-      plays: "434,921",
+      plays: "73",
       genre: "Ambient",
       imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
-      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves",
+      soundCloudLink: "https://soundcloud.com/sunamemusic/suname-mix-001?si=7e757f02ec5546db8af55ad410873229",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5)
     },
     {
