@@ -98,15 +98,15 @@ const MusicPage = () => {
     },
     {
       id: 5,
-      title: "Digital Rain",
+      title: "SUNDAY MIX - #002",
       artist: "SUNAME",
       album: "Cyberpunk Nights",
-      duration: "4:07",
+      duration: "1:00:49",
       releaseDate: "2024-08-14",
-      plays: "1,847,293",
+      plays: "26",
       genre: "Cyberpunk",
       imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
-      soundCloudLink: "https://soundcloud.com/suname/digital-rain",
+      soundCloudLink: "https://soundcloud.com/sunamemusic/suname-sunday-mix-002?si=4fce398e7a7b4f5cb36176f42fc78755",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3)
     },
     {
