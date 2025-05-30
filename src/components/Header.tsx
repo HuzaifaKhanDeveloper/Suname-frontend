@@ -9,6 +9,7 @@ interface HeaderProps {
 
 const navItems = [
   { title: 'Home', path: '/' },
+  { title: 'Music', path: '/music' },
   { title: 'Live Mixes', path: '/mixes' },
   { title: 'Bookings', path: '/bookings' },
   { title: 'Contact', path: '/contact' },
