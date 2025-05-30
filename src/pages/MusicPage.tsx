@@ -10,8 +10,8 @@ import {
   Eye,
   Link,
   ExternalLink,
-  Download, // Ensure Download icon is imported
-  ListPlus // Icon for "Add to Playlist"
+  Download,
+  ListPlus
 } from 'lucide-react';
 
 const MusicPage = () => {
@@ -178,19 +178,20 @@ const MusicPage = () => {
   };
 
   const handleDownloadArtistInfo = () => {
-    alert('Downloading artist info (mock action)...'); // Placeholder for actual download logic
+    alert('Downloading artist info (mock action)...');
     setShowMoreOptions(false);
   };
 
   const handleAddToPlaylist = (trackTitle) => {
-    alert(`Adding "${trackTitle}" to playlist (mock action)...`); // Placeholder for actual add to playlist logic
+    alert(`Adding "${trackTitle}" to playlist (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       className="min-h-screen pt-24 pb-12 px-4 relative overflow-hidden"
     >
       <motion.div
@@ -210,13 +211,13 @@ const MusicPage = () => {
         className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-6 mb-8`}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <motion.div
               className="relative group"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, rotateZ: 2 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
@@ -394,7 +395,12 @@ const MusicPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index, ease: "easeOut" }}
                 onClick={() => handleTrackClick(track.id)}
-                whileHover={{ scale: 1.03, y: -2, boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)' }}
+                whileHover={{
+                  scale: 1.03,
+                  y: -2,
+                  boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)',
+                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.7)' : 'rgba(243, 244, 246, 0.7)' // Subtle background change
+                }}
                 whileTap={{ scale: 0.97 }}
               >
                 <div className="w-8 flex-shrink-0 flex justify-center">
@@ -403,10 +409,12 @@ const MusicPage = () => {
                   </span>
                 </div>
 
-                <img
+                <motion.img
                   src={track.imageUrl}
                   alt={track.title}
                   className="w-12 h-12 rounded object-cover flex-shrink-0"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 />
 
                 <div className="flex-1 min-w-0 text-center sm:text-left">
@@ -480,6 +488,16 @@ const MusicPage = () => {
                           >
                             <ListPlus className="w-4 h-4" />
                             Add to Playlist
+                          </motion.button>
+                          <motion.button
+                            onClick={() => alert(`Downloading "${track.title}" (mock action)...`)}
+                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
+                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                            whileTap={{ scale: 0.96 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                          >
+                            <Download className="w-4 h-4" />
+                            Download Track
                           </motion.button>
                         </motion.div>
                       )}
