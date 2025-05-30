@@ -218,6 +218,11 @@ const MusicPage = () => {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        whileHover={{
+          scale: 1.005,
+          boxShadow: isDarkMode ? '0 15px 30px rgba(0,0,0,0.6)' : '0 15px 30px rgba(0,0,0,0.2)'
+        }}
+        whileTap={{ scale: 0.995 }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-8">
@@ -321,7 +326,7 @@ const MusicPage = () => {
                 className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, ease: "easeOut" }} {/* Adjusted delay */}
+                transition={{ delay: 0.6, ease: "easeOut" }}
               >
                 <motion.button
                   onClick={handleFollowToggle}
@@ -401,18 +406,6 @@ const MusicPage = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
-              </motion.div>
-              <AnimatePresence>
-                {showCopyMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="mt-4 text-center text-sm font-medium text-green-500"
-                  >
-                    Link copied to clipboard!
-                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
@@ -426,6 +419,11 @@ const MusicPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, ease: "easeOut" }}
+          whileHover={{
+            scale: 1.005,
+            boxShadow: isDarkMode ? '0 15px 30px rgba(0,0,0,0.6)' : '0 15px 30px rgba(0,0,0,0.2)'
+          }}
+          whileTap={{ scale: 0.995 }}
         >
         <motion.div
           className="mb-8"
@@ -433,7 +431,11 @@ const MusicPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, ease: "easeOut" }}
         >
-          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-6`}>
+          <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-6`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, ease: "easeOut" }}
+          >
             Popular
           </h2>
 
