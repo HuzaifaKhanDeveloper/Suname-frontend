@@ -225,7 +225,7 @@ const MusicPage = () => {
       />
 
       <motion.div
-        className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-4 sm:px-6 mb-8`} {/* Adjusted padding for mobile */}
+        className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-4 sm:px-6 mb-8`}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -240,14 +240,14 @@ const MusicPage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <motion.div
-              className="relative group w-full flex justify-center lg:justify-start" // Added flex and justify-center for mobile centering
+              className="relative group w-full flex justify-center lg:justify-start"
               whileHover={{ scale: 1.05, rotateZ: 2, filter: 'brightness(1.1)' }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
                 src="https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=400"
                 alt="SUNAME"
-                className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-2xl object-cover" // Responsive image size
+                className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-2xl object-cover"
               />
             </motion.div>
 
@@ -431,13 +431,13 @@ const MusicPage = () => {
       </motion.div>
 
       <motion.div
-        className="max-w-7xl mx-auto px-4 sm:px-6 py-8" // Adjusted padding for mobile
+        className="max-w-7xl mx-auto px-4 sm:px-6 py-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, ease: "easeOut" }} // Added entrance animation for this section
+        transition={{ delay: 0.8, ease: "easeOut" }}
       >
         <motion.div
-          className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl p-4 sm:p-8`} {/* Adjusted padding for mobile */}
+          className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl p-4 sm:p-8`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, ease: "easeOut" }}
@@ -573,7 +573,6 @@ const MusicPage = () => {
         </motion.div>
         </motion.div>
       </motion.div>
-           </motion.div>
     </motion.div>
   );
 };
