@@ -26,13 +26,10 @@ const MusicPage = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close main more options dropdown if click is outside its ref
       if (mainMoreOptionsRef.current && !mainMoreOptionsRef.current.contains(event.target)) {
         setShowMoreOptions(false);
       }
 
-      // Close any open track options dropdown if click is outside its ref
-      // We only need to check the currently open one, as openTrackOptionsId holds only one ID.
       if (openTrackOptionsId !== null && trackOptionsRefs.current[openTrackOptionsId]) {
         if (!trackOptionsRefs.current[openTrackOptionsId].contains(event.target)) {
           setOpenTrackOptionsId(null);
@@ -44,7 +41,7 @@ const MusicPage = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [mainMoreOptionsRef, trackOptionsRefs, openTrackOptionsId]); // Added openTrackOptionsId to dependencies
+  }, [mainMoreOptionsRef, trackOptionsRefs, openTrackOptionsId]);
 
   const tracks = [
     {
@@ -127,7 +124,6 @@ const MusicPage = () => {
     }
   ];
 
-  // Define social media links with names for display
   const socialMediaLinks = [
     { icon: FaSoundcloud, url: biography.socials.soundcloud, name: 'SoundCloud' },
     { icon: FaInstagram, url: biography.socials.instagram, name: 'Instagram' },
@@ -139,7 +135,6 @@ const MusicPage = () => {
   ];
 
   const handleTrackClick = (trackId) => {
-    // Close any open track options when a track row is clicked
     if (openTrackOptionsId !== null) {
       setOpenTrackOptionsId(null);
     }
@@ -161,7 +156,7 @@ const MusicPage = () => {
       tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
       tempInput.select();
-      document.execCommand('copy'); // Use document.execCommand for clipboard operations in iframes
+      document.execCommand('copy');
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
       setTimeout(() => setShowCopyMessage(false), 2000);
@@ -173,10 +168,8 @@ const MusicPage = () => {
   };
 
   const handleShare = async (linkToShare, title, text) => {
-    // In this Canvas environment, navigator.share() is often restricted in iframes.
-    // We will directly use the copy link functionality as a reliable alternative.
     console.log('Attempting to share/copy link...');
-    handleCopyLink(linkToShare); // Directly call copy function
+    handleCopyLink(linkToShare);
     setShowMoreOptions(false);
     setOpenTrackOptionsId(null);
   };
@@ -186,20 +179,12 @@ const MusicPage = () => {
     window.open(randomLink, '_blank');
   };
 
-  const handleReportProfile = () => {
-    // In a real application, you'd replace this with a custom modal or toast notification
-    console.log('Reporting artist profile (mock action)...');
-    setShowMoreOptions(false);
-  };
-
   const handleAddToPlaylist = (trackTitle) => {
-    // In a real application, you'd replace this with a custom modal or toast notification
     console.log(`Adding "${trackTitle}" to playlist (mock action)...`);
     setOpenTrackOptionsId(null);
   };
 
   const handleReportTrack = (trackTitle) => {
-    // In a real application, you'd replace this with a custom modal or toast notification
     console.log(`Reporting "${trackTitle}" (mock action)...`);
     setOpenTrackOptionsId(null);
   };
@@ -211,6 +196,21 @@ const MusicPage = () => {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="min-h-screen pt-24 pb-12 px-4 relative overflow-hidden"
     >
+      <AnimatePresence>
+        {showCopyMessage && (
+          <motion.div
+            key="copy-notification"
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 20, opacity: 1 }}
+            exit={{ y: -80, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className={`fixed top-0 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-md shadow-lg font-semibold text-white bg-green-600 max-w-sm text-center`}
+          >
+            Link Copied!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div
         className="absolute inset-0 -z-10"
         animate={{
@@ -359,16 +359,14 @@ const MusicPage = () => {
                           <Share2 className="w-4 h-4" />
                           Share
                         </motion.button>
-                        {/* Removed Report Profile button */}
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
               </motion.div>
 
-              {/* Social Media Icons - Moved inside the flex-1 div and styled as buttons */}
               <motion.div
-                className="flex flex-wrap justify-center lg:justify-start gap-4 mt-6" // Adjusted classes for better alignment
+                className="flex flex-wrap justify-center lg:justify-start gap-4 mt-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, ease: "easeOut" }}
@@ -384,22 +382,22 @@ const MusicPage = () => {
                     `}
                     whileHover={{
                       scale: 1.05,
-                      y: -3, // Subtle lift
-                      rotate: 2, // Slight rotation
+                      y: -3,
+                      rotate: 2,
                       boxShadow: isDarkMode ? '0 8px 16px rgba(0,0,0,0.4)' : '0 8px 16px rgba(0,0,0,0.2)',
-                      backgroundColor: isDarkMode ? '#374151' : '#E5E7EB' // Slightly darker/lighter background on hover
+                      backgroundColor: isDarkMode ? '#374151' : '#E5E7EB'
                     }}
-                    whileTap={{ scale: 0.95, y: 0, rotate: 0 }} // Reset on tap
+                    whileTap={{ scale: 0.95, y: 0, rotate: 0 }}
                   >
                     <motion.span
                       className="inline-block mr-2 text-2xl"
                       style={{
-                        color: isDarkMode ? '#FFFFFF' : '#333333', // Default icon color
+                        color: isDarkMode ? '#FFFFFF' : '#333333',
                       }}
                       whileHover={{
                         scale: 1.2,
-                        rotate: 15, // Rotate icon on hover
-                        color: isDarkMode ? '#A78BFA' : '#F97316', // Hover icon color
+                        rotate: 15,
+                        color: isDarkMode ? '#A78BFA' : '#F97316',
                       }}
                       transition={{
                         color: { duration: 0.4, ease: "easeOut" },
@@ -454,7 +452,7 @@ const MusicPage = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index, ease: "easeOut" }}
-                onClick={() => handleTrackClick(track.id)} // Modified to close dropdowns
+                onClick={() => handleTrackClick(track.id)}
                 whileHover={{
                   scale: 1.03,
                   y: -2,
@@ -499,9 +497,7 @@ const MusicPage = () => {
                   <div className="relative" ref={el => trackOptionsRefs.current[track.id] = el}>
                     <motion.button
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent click from bubbling up to the track row
-                        // Toggle the dropdown for the clicked track.
-                        // This implicitly closes any other open dropdown because openTrackOptionsId is a single state.
+                        e.stopPropagation();
                         setOpenTrackOptionsId(openTrackOptionsId === track.id ? null : track.id);
                       }}
                       className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 transition-colors rounded-full flex items-center justify-center`}
@@ -515,7 +511,7 @@ const MusicPage = () => {
                     <AnimatePresence>
                       {openTrackOptionsId === track.id && (
                         <motion.div
-                          key={track.id} // Key is crucial for AnimatePresence to track component mounting/unmounting
+                          key={track.id}
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
