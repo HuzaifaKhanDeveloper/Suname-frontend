@@ -149,8 +149,16 @@ const MusicPage = () => {
     setIsFollowing(prev => !prev);
   };
 
-  const handleCopyLink = (linkToCopy) => {
+  const handleCopyLink = async (linkToCopy) => {
     try {
+      await navigator.clipboard.writeText(linkToCopy);
+      setShowCopyMessage(true);
+      setTimeout(() => setShowCopyMessage(false), 2000);
+      setShowMoreOptions(false);
+      setOpenTrackOptionsId(null);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      // Fallback for older browsers or if permission is denied (less common now)
       const tempInput = document.createElement('textarea');
       tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
@@ -161,31 +169,8 @@ const MusicPage = () => {
       setTimeout(() => setShowCopyMessage(false), 2000);
       setShowMoreOptions(false);
       setOpenTrackOptionsId(null);
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
     }
   };
-
-  // The handleShare function is no longer needed as the share button is removed.
-  // const handleShare = async (linkToShare, title, text) => {
-  //   if (navigator.share) {
-  //     try {
-  //       await navigator.share({
-  //         title: title,
-  //         text: text,
-  //         url: linkToShare,
-  //       });
-  //       console.log('Content shared successfully');
-  //     } catch (error) {
-  //       console.error('Error sharing:', error);
-  //       handleCopyLink(linkToShare);
-  //     }
-  //   } else {
-  //     handleCopyLink(linkToShare);
-  //   }
-  //   setShowMoreOptions(false);
-  //   setOpenTrackOptionsId(null);
-  // };
 
   const handleListenInSoundCloud = () => {
     const randomLink = tracks[Math.floor(Math.random() * tracks.length)].soundCloudLink;
@@ -362,7 +347,6 @@ const MusicPage = () => {
                           <Link className="w-4 h-4" />
                           Copy Link
                         </motion.button>
-                        {/* Removed the Share button */}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -542,6 +526,28 @@ const MusicPage = () => {
           </div>
         </motion.div>
         </motion.div>
+
+        {/* Artwork & Website by section */}
+        <motion.section
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="text-center mt-12"
+        >
+          <p className={`text-sm font-bold ${
+            isDarkMode ? 'text-white' : 'text-gray-800'
+          }`}>
+            Artwork & Website by{' '}
+            <a
+              href={biography.designer.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-primary-500 hover:text-primary-400"
+            >
+              {biography.designer.name}
+            </a>
+          </p>
+        </motion.section>
       </div>
     </motion.div>
   );
