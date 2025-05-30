@@ -48,7 +48,7 @@ const MusicPage = () => {
       id: 1,
       title: "Elixr Orlando December Set",
       artist: "SUNAME",
-      album: "Digital Dreams",
+      album: "Elixir",
       duration: "1:01:13",
       releaseDate: "5 months ago",
       plays: "127",
