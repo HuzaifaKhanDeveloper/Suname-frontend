@@ -61,7 +61,7 @@ const MusicPage = () => {
       id: 2,
       title: "Elixir Live Set",
       artist: "SUNAME",
-      album: "Digital Dreams",
+      album: "Elixir",
       duration: "1:01:50",
       releaseDate: "9 months ago",
       plays: "26",
