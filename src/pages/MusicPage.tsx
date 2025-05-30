@@ -256,7 +256,7 @@ const MusicPage = () => {
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
-                src="https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=400"
+                src="https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg"
                 alt="SUNAME"
                 className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-2xl object-cover"
               />
