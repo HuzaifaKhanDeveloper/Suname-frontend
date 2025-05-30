@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { biography } from '../data/biography'; // Assuming this import is correct and needed elsewhere
-
+import { biography } from '../data/biography';
 import {
   Play,
   Pause,
@@ -306,6 +305,7 @@ const MusicPage = () => {
                 transition={{ delay: 0.1 * index }}
                 onClick={() => handleTrackClick(track.id)}
                 whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {/* Track Number / Play Button */}
                 <div className="w-8 flex justify-center">
@@ -406,6 +406,7 @@ const MusicPage = () => {
             ))}
           </div>
         </motion.div>
+        </motion.div>
 
         {/* Player Controls (when active) */}
         <AnimatePresence>
@@ -431,8 +432,8 @@ const MusicPage = () => {
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} truncate`}>
                       {tracks.find(t => t.id === activeTrack)?.artist}
                     </p>
-                    <Heart className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'} ml-2`} />
                   </div>
+                  <Heart className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'} ml-2`} />
                 </div>
 
                 {/* Controls */}
