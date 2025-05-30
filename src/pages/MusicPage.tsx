@@ -573,6 +573,7 @@ const MusicPage = () => {
         </motion.div>
         </motion.div>
       </motion.div>
+           </motion.div>
     </motion.div>
   );
 };
