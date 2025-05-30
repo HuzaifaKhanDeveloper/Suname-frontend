@@ -59,15 +59,15 @@ const MusicPage = () => {
     },
     {
       id: 2,
-      title: "Neon Dreams",
+      title: "Elixir Live Set",
       artist: "SUNAME",
       album: "Digital Dreams",
-      duration: "4:12",
-      releaseDate: "2024-11-28",
-      plays: "1,203,847",
-      genre: "Synthwave",
-      imageUrl: "https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/neon-dreams",
+      duration: "1:01:50",
+      releaseDate: "9 months ago",
+      plays: "26",
+      genre: "Dance",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
+      soundCloudLink: "https://soundcloud.com/sunamemusic/elixir-set-20?si=4715a0105bf34b15aff696959175a3f3",
       waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.15) * 0.4 + Math.random() * 0.4)
     },
     {
