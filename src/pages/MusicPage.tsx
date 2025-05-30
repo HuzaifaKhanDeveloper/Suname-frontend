@@ -500,6 +500,8 @@ const MusicPage = () => {
                     <motion.button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent click from bubbling up to the track row
+                        // Toggle the dropdown for the clicked track.
+                        // This implicitly closes any other open dropdown because openTrackOptionsId is a single state.
                         setOpenTrackOptionsId(openTrackOptionsId === track.id ? null : track.id);
                       }}
                       className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 transition-colors rounded-full flex items-center justify-center`}
@@ -513,6 +515,7 @@ const MusicPage = () => {
                     <AnimatePresence>
                       {openTrackOptionsId === track.id && (
                         <motion.div
+                          key={track.id} // Key is crucial for AnimatePresence to track component mounting/unmounting
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
