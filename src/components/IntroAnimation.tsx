@@ -53,18 +53,24 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
   }, []);
 
   const animateParticles = useCallback((deltaTime: number) => {
-    const timeScale = deltaTime / 16.67; 
+    // Ensure timeScale is never negative and has a minimum value
+    const timeScale = Math.max(0.1, Math.abs(deltaTime) / 16.67);
 
-    particlesRef.current = particlesRef.current.map(particle => ({
-      ...particle,
-      x: particle.x + particle.vx * timeScale,
-      y: particle.y + particle.vy * timeScale,
-      vy: particle.vy + 0.06 * timeScale,
-      life: particle.life - 1.5 * timeScale,
-      size: particle.size * (1 - 0.008 * timeScale)
-    })).filter(particle => particle.life > 0);
+    particlesRef.current = particlesRef.current.map(particle => {
+      // Ensure particle size never goes below 0.1
+      const newSize = Math.max(0.1, particle.size * (1 - 0.008 * timeScale));
+      return {
+        ...particle,
+        x: particle.x + particle.vx * timeScale,
+        y: particle.y + particle.vy * timeScale,
+        vy: particle.vy + 0.06 * timeScale,
+        life: particle.life - 1.5 * timeScale,
+        size: newSize
+      };
+    }).filter(particle => particle.life > 0);
 
-    shockwaveRef.current += 8 * timeScale;
+    // Ensure shockwave radius is never negative
+    shockwaveRef.current = Math.max(0, shockwaveRef.current + 8 * timeScale);
     setShockwaveRadius(shockwaveRef.current);
   }, []);
 
@@ -93,7 +99,9 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
 
         if (shockwaveRef.current < maxRadius) {
           ctx.beginPath();
-          ctx.arc(centerX, centerY, shockwaveRef.current, 0, Math.PI * 2);
+          // Ensure radius is never negative
+          const radius = Math.max(0, shockwaveRef.current);
+          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
           const opacity = Math.max(0, 1 - shockwaveRef.current / maxRadius);
           ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
           ctx.lineWidth = 2;
@@ -102,13 +110,15 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
 
         ctx.save();
         particlesRef.current.forEach(particle => {
-          const opacity = particle.life / particle.maxLife;
+          const opacity = Math.max(0, Math.min(1, particle.life / particle.maxLife));
 
           ctx.globalAlpha = opacity;
           ctx.fillStyle = particle.color;
 
           ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          // Ensure particle size is never negative
+          const size = Math.max(0.1, particle.size);
+          ctx.arc(particle.x, particle.y, size, 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.restore();
@@ -168,7 +178,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
         exit={{ opacity: 0 }}
         transition={{ duration: 1.2, ease: "easeInOut" }}
       >
-        {}
         <canvas
           ref={canvasRef}
           className="absolute inset-0"
@@ -178,7 +187,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           }}
         />
 
-        {}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
             className="relative"
@@ -194,7 +202,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
             }}
             style={{ willChange: 'transform' }}
           >
-            {}
             <motion.div
               className="absolute w-40 h-40 rounded-full"
               style={{
@@ -213,7 +220,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               }}
             />
 
-            {}
             <motion.div
               className="w-32 h-32 rounded-full relative z-10"
               style={{
@@ -238,7 +244,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               }}
             />
 
-            {}
             {[...Array(2)].map((_, i) => (
               <motion.div
                 key={i}
@@ -267,7 +272,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           </motion.div>
         </div>
 
-        {}
         {stage === 'explosion' && (
           <motion.div
             className="absolute inset-0 bg-white"
@@ -282,7 +286,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           />
         )}
 
-        {}
         {stage === 'fade' && (
           <motion.div
             className="absolute inset-0 bg-black"
