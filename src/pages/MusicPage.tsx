@@ -362,16 +362,7 @@ const MusicPage = () => {
                           <Share2 className="w-4 h-4" />
                           Share
                         </motion.button>
-                        <motion.button
-                          onClick={handleReportProfile}
-                          className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                          whileTap={{ scale: 0.96 }}
-                          transition={{ duration: 0.15, ease: "easeOut" }}
-                        >
-                          <Flag className="w-4 h-4" />
-                          Report Profile
-                        </motion.button>
+                        {/* Removed Report Profile button */}
                       </motion.div>
                     )}
                   </AnimatePresence>
