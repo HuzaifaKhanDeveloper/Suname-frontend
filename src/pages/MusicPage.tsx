@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'; // Added useRef and useEffect for dropdown
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
@@ -8,16 +8,16 @@ import {
   MoreHorizontal,
   Headphones,
   Music,
-  Eye, // Added Eye icon
-  Link // Added Link icon for copy functionality
+  Eye,
+  Link
 } from 'lucide-react';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
-  const [isFollowing, setIsFollowing] = useState(false); // State for follow button
-  const [showCopyMessage, setShowCopyMessage] = useState(false); // State for copy link message
-  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for showing more options dropdown
-  const moreOptionsRef = useRef(null); // Ref for the more options dropdown
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const moreOptionsRef = useRef(null);
 
   // Effect to close dropdown when clicking outside
   useEffect(() => {
@@ -258,9 +258,14 @@ const MusicPage = () => {
                 {/* Removed Play button */}
                 <motion.button
                   onClick={handleFollowToggle}
-                  className={`${isFollowing ? 'bg-purple-600 text-white' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold transition-colors`}
+                  className={`${isFollowing ? 'bg-purple-600 text-white' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold`} // Removed transition-colors here as it's handled by motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  animate={{
+                    backgroundColor: isFollowing ? 'rgb(147, 51, 234)' : (isDarkMode ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'),
+                    color: isFollowing ? 'rgb(255, 255, 255)' : (isDarkMode ? 'rgb(209, 213, 219)' : 'rgb(75, 85, 99)')
+                  }}
+                  transition={{ duration: 0.3 }}
                 >
                   {isFollowing ? 'Following' : 'Follow'}
                 </motion.button>
@@ -280,21 +285,22 @@ const MusicPage = () => {
                   <AnimatePresence>
                     {showMoreOptions && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-2 z-10 border`}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-2 z-10 border origin-top-right`}
                       >
                         <button
                           onClick={handleCopyLink}
-                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} rounded-md mx-auto`}
                         >
                           <Link className="w-4 h-4" />
                           Copy Link
                         </button>
                         <button
                           onClick={handleShare}
-                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} rounded-md mx-auto`}
                         >
                           <Share2 className="w-4 h-4" />
                           Share
