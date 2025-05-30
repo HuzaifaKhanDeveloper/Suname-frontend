@@ -5,14 +5,12 @@ import { useTheme } from '../context/ThemeContext';
 
 interface VinylRecordProps {
   size?: number;
-  isPlaying?: boolean;
   className?: string;
   albumCover?: string;
 }
 
 const VinylRecord: React.FC<VinylRecordProps> = ({
   size = 260,
-  isPlaying = false,
   className = '',
   albumCover = 'https://images.pexels.com/photos/167092/pexels-photo-167092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 }) => {
@@ -40,14 +38,14 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
           className="relative"
           style={{ width: vinylSize, height: vinylSize }}
           animate={{ 
-            rotate: isPlaying ? 360 : 0,
+            rotate: 360, // Always rotate
             scale: hover ? 1.05 : 1,
           }}
           transition={{ 
             rotate: {
               duration: 6,
               ease: "linear",
-              repeat: isPlaying ? Infinity : 0,
+              repeat: Infinity, // Always repeat
             },
             scale: {
               duration: 0.3,
@@ -87,10 +85,10 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 borderStyle: 'solid',
                 borderColor: 'rgba(50, 50, 50, 0.6)',
               }}
-              animate={isPlaying ? {
+              animate={{ // Always animate grooves
                 rotate: [0, 360],
                 scale: [1, 1.02, 1],
-              } : {}}
+              }}
               transition={{
                 rotate: {
                   duration: 20,
@@ -125,9 +123,9 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
-              animate={isPlaying ? {
+              animate={{ // Always animate album cover
                 rotate: [0, 360],
-              } : {}}
+              }}
               transition={{
                 duration: 6,
                 repeat: Infinity,
@@ -144,8 +142,8 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
                 height: `${holeSIze}px`,
               }}
               animate={{
-                scale: isPlaying ? [1, 1.2, 1] : 1,
-                opacity: isPlaying ? [0.8, 1, 0.8] : 0.8,
+                scale: [1, 1.2, 1], // Always pulse
+                opacity: [0.8, 1, 0.8], // Always change opacity
               }}
               transition={{
                 duration: 1,
