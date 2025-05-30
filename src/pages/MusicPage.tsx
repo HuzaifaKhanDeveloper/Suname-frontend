@@ -9,7 +9,8 @@ import {
   Headphones,
   Music,
   Eye,
-  Link
+  Link,
+  ExternalLink // Added ExternalLink icon for SoundCloud button
 } from 'lucide-react';
 
 const MusicPage = () => {
@@ -167,6 +168,12 @@ const MusicPage = () => {
     }
   };
 
+  // Function to open a random SoundCloud link
+  const handleListenInSoundCloud = () => {
+    const randomLink = soundCloudLinks[Math.floor(Math.random() * soundCloudLinks.length)];
+    window.open(randomLink, '_blank');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -258,7 +265,7 @@ const MusicPage = () => {
                 {/* Removed Play button */}
                 <motion.button
                   onClick={handleFollowToggle}
-                  className={`${isFollowing ? 'bg-purple-600 text-white' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold`} // Removed transition-colors here as it's handled by motion.div
+                  className={`${isFollowing ? 'bg-purple-600 text-white' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   animate={{
@@ -270,11 +277,20 @@ const MusicPage = () => {
                   {isFollowing ? 'Following' : 'Follow'}
                 </motion.button>
 
-                {/* Removed direct Copy Link and Share buttons */}
+                {/* New "Listen in SoundCloud" button */}
+                <motion.button
+                  onClick={handleListenInSoundCloud}
+                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  Listen in SoundCloud
+                </motion.button>
 
-                <div className="relative" ref={moreOptionsRef}> {/* Wrap for positioning dropdown */}
+                <div className="relative" ref={moreOptionsRef}>
                   <motion.button
-                    onClick={() => setShowMoreOptions(prev => !prev)} // Toggle dropdown visibility
+                    onClick={() => setShowMoreOptions(prev => !prev)}
                     className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors`}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
