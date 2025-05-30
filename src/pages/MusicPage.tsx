@@ -1,100 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Assuming useTheme, biography, AudioVisualizer, and MusicCard are available in the context/components folder
-// For demonstration, I'll mock useTheme, biography, AudioVisualizer, and MusicCard
-import { ArrowRight, Music2 } from 'lucide-react'; // Assuming lucide-react is available
-
-// Mock for useTheme
-const useTheme = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode for better contrast in example
-  return { isDarkMode, setIsDarkMode };
-};
-
-// Mock for biography
-const biography = {
-  designer: {
-    name: "AI Designer",
-    twitter: "https://twitter.com/aid_designer"
-  }
-};
-
-// Mock for AudioVisualizer
-const AudioVisualizer = ({ height, barCount, color }) => {
-  return (
-    <div
-      className="w-full flex justify-center items-end rounded-lg overflow-hidden"
-      style={{ height: `${height}px`, backgroundColor: 'rgba(0,0,0,0.1)' }}
-    >
-      {Array.from({ length: barCount }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="w-1.5 mx-0.5 rounded-t-sm"
-          style={{ backgroundColor: color }}
-          initial={{ scaleY: 0.1, opacity: 0.5 }}
-          animate={{ scaleY: [0.1, Math.random() * 0.8 + 0.2, 0.1], opacity: [0.5, 1, 0.5] }}
-          transition={{
-            duration: Math.random() * 1.5 + 0.5,
-            repeat: Infinity,
-            repeatType: "reverse",
-            delay: i * 0.05
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// Mock for MusicCard
-const MusicCard = ({ title, description, imageUrl, link, isPlaying, onTogglePlay }) => {
-  const { isDarkMode } = useTheme();
-  return (
-    <motion.div
-      className={`relative flex flex-col md:flex-row items-center p-4 rounded-2xl shadow-lg transition-all duration-300
-        ${isDarkMode ? 'bg-gray-800/70 text-white border border-gray-700' : 'bg-white/70 text-gray-900 border border-gray-200'}
-        backdrop-blur-sm`}
-      whileHover={{ scale: 1.03, boxShadow: isDarkMode ? "0 10px 20px rgba(0,0,0,0.4)" : "0 10px 20px rgba(0,0,0,0.1)" }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
-      <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-24 h-24 rounded-lg object-cover shadow-md"
-          onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/96x96/cccccc/333333?text=No+Image`; }}
-        />
-      </div>
-      <div className="flex-grow text-center md:text-left">
-        <h3 className="text-xl font-semibold mb-1">{title}</h3>
-        <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{description}</p>
-        <div className="mt-3 flex justify-center md:justify-start space-x-3">
-          <motion.button
-            onClick={onTogglePlay}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
-              ${isPlaying ? 'bg-primary-600 text-white' : 'bg-primary-500 text-white hover:bg-primary-600'}
-              focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-opacity-75`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {isPlaying ? 'Pause' : 'Play'}
-          </motion.button>
-          <motion.a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
-              ${isDarkMode ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}
-              focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Listen
-          </motion.a>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
+import { useTheme } from '../context/ThemeContext';
+import { biography } from '../data/biography';
+import AudioVisualizer from '../components/AudioVisualizer';
+import MusicCard from '../components/MusicCard';
+import { ArrowRight, Music2 } from 'lucide-react';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
@@ -125,30 +35,6 @@ const MusicPage = () => {
       description: "Featured collaboration",
       imageUrl: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1600",
       link: "https://music.apple.com/us/album/your-track-id"
-    },
-    {
-      title: "Example Track 5",
-      description: "A deep cut from the archives",
-      imageUrl: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      link: "https://open.spotify.com/track/your-track-id"
-    },
-    {
-      title: "Example Track 6",
-      description: "Live performance recording",
-      imageUrl: "https://images.pexels.com/photos/210186/pexels-photo-210186.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      link: "https://music.apple.com/us/album/your-track-id"
-    },
-    {
-      title: "Example Track 7",
-      description: "Remix by a guest artist",
-      imageUrl: "https://images.pexels.com/photos/2078076/pexels-photo-2078076.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      link: "https://open.spotify.com/track/your-track-id"
-    },
-    {
-      title: "Example Track 8",
-      description: "A chill instrumental piece",
-      imageUrl: "https://images.pexels.com/photos/1407322/pexels-photo-1407322.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      link: "https://music.apple.com/us/album/your-track-id"
     }
   ];
 
@@ -178,26 +64,13 @@ const MusicPage = () => {
   const arrowVariants = {
     rest: { x: 0 },
     hover: {
-      x: [0, 10, 0, 10, 0], // Arrow moves right, then back, then right again
+      x: 10,
       transition: {
-        duration: 0.8,
-        ease: "easeInOut",
-        repeat: Infinity, // Repeat the animation
-        repeatType: "loop"
+        duration: 0.3,
+        type: "spring",
+        stiffness: 400,
+        damping: 10
       }
-    }
-  };
-
-  const backgroundGradientVariants = {
-    animate: {
-      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-      backgroundSize: ['200% 200%', '200% 200%', '200% 200%'],
-    },
-    transition: {
-      duration: 25,
-      ease: "linear",
-      repeat: Infinity,
-      repeatType: "loop"
     }
   };
 
@@ -206,23 +79,9 @@ const MusicPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`min-h-screen pt-24 pb-12 px-4 relative overflow-hidden
-        ${isDarkMode ? 'bg-gradient-to-br from-gray-900 to-black' : 'bg-gradient-to-br from-blue-50 to-purple-50'}`}
+      className="min-h-screen pt-24 pb-12 px-4"
     >
-      {/* Background animated gradient overlay */}
-      <motion.div
-        className="absolute inset-0 z-0 opacity-30"
-        style={{
-          backgroundImage: isDarkMode
-            ? 'linear-gradient(270deg, #8B5CF6, #EC4899, #6366F1, #8B5CF6)'
-            : 'linear-gradient(270deg, #A78BFA, #F9A8D4, #818CF8, #A78BFA)',
-          backgroundSize: '200% 200%',
-        }}
-        animate={backgroundGradientVariants.animate}
-        transition={backgroundGradientVariants.transition}
-      />
-
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -268,7 +127,7 @@ const MusicPage = () => {
             Experience the sound of SUNAME
           </motion.p>
 
-          <motion.div
+          <motion.div 
             className="mt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
