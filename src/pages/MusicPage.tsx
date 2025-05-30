@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
 import {
-  Share2,
   MoreHorizontal,
   Headphones,
   Music,
@@ -12,7 +11,7 @@ import {
   ExternalLink,
   ListPlus,
   Flag
-} from 'lucide-react';
+} from 'lucide-react'; // Removed Share2
 import { FaSoundcloud, FaInstagram, FaTwitter, FaTiktok, FaYoutube, FaSpotify, FaApple } from 'react-icons/fa';
 
 const MusicPage = () => {
@@ -167,25 +166,26 @@ const MusicPage = () => {
     }
   };
 
-  const handleShare = async (linkToShare, title, text) => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: title,
-          text: text,
-          url: linkToShare,
-        });
-        console.log('Content shared successfully');
-      } catch (error) {
-        console.error('Error sharing:', error);
-        handleCopyLink(linkToShare);
-      }
-    } else {
-      handleCopyLink(linkToShare);
-    }
-    setShowMoreOptions(false);
-    setOpenTrackOptionsId(null);
-  };
+  // The handleShare function is no longer needed as the share button is removed.
+  // const handleShare = async (linkToShare, title, text) => {
+  //   if (navigator.share) {
+  //     try {
+  //       await navigator.share({
+  //         title: title,
+  //         text: text,
+  //         url: linkToShare,
+  //       });
+  //       console.log('Content shared successfully');
+  //     } catch (error) {
+  //       console.error('Error sharing:', error);
+  //       handleCopyLink(linkToShare);
+  //     }
+  //   } else {
+  //     handleCopyLink(linkToShare);
+  //   }
+  //   setShowMoreOptions(false);
+  //   setOpenTrackOptionsId(null);
+  // };
 
   const handleListenInSoundCloud = () => {
     const randomLink = tracks[Math.floor(Math.random() * tracks.length)].soundCloudLink;
@@ -362,16 +362,7 @@ const MusicPage = () => {
                           <Link className="w-4 h-4" />
                           Copy Link
                         </motion.button>
-                        <motion.button
-                          onClick={() => handleShare(window.location.href, 'Check out this music page!', 'Listen to amazing tracks by SUNAME.')}
-                          className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
-                          whileTap={{ scale: 0.96 }}
-                          transition={{ duration: 0.15, ease: "easeOut" }}
-                        >
-                          <Share2 className="w-4 h-4" />
-                          Share
-                        </motion.button>
+                        {/* Removed the Share button */}
                       </motion.div>
                     )}
                   </AnimatePresence>
