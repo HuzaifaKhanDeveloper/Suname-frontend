@@ -7,13 +7,17 @@ import {
   Download,
   MoreHorizontal,
   Headphones,
-  Music
+  Music,
+  Eye, // Added Eye icon
+  Link // Added Link icon for copy functionality
 } from 'lucide-react';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
   // Removed likedTracks state as heart/like functionality is being removed
   // const [likedTracks, setLikedTracks] = useState(new Set());
+  const [isFollowing, setIsFollowing] = useState(false); // State for follow button
+  const [showCopyMessage, setShowCopyMessage] = useState(false); // State for copy link message
 
   const soundCloudLinks = [
     "https://soundcloud.com/suname/midnight-echoes",
@@ -105,16 +109,46 @@ const MusicPage = () => {
     window.open(randomLink, '_blank');
   };
 
-  // Removed toggleLike function as heart/like functionality is being removed
-  // const toggleLike = (trackId) => {
-  //   const newLiked = new Set(likedTracks);
-  //   if (newLiked.has(trackId)) {
-  //     newLiked.delete(trackId);
-  //   } else {
-  //     newLiked.add(trackId);
-  //   }
-  //   setLikedTracks(newLiked);
-  // };
+  const handleFollowToggle = () => {
+    setIsFollowing(prev => !prev);
+  };
+
+  const handleCopyLink = () => {
+    const currentUrl = window.location.href;
+    try {
+      // Use document.execCommand('copy') for clipboard operations in iframes
+      const tempInput = document.createElement('textarea');
+      tempInput.value = currentUrl;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      setShowCopyMessage(true);
+      setTimeout(() => setShowCopyMessage(false), 2000); // Hide message after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      // Optionally, show a fallback message or handle error
+    }
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+        title: 'Check out this music page!',
+        text: 'Listen to amazing tracks by SUNAME.',
+        url: window.location.href,
+    };
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            // Fallback for browsers that do not support navigator.share
+            console.log('Web Share API not supported. Copying link instead.');
+            handleCopyLink(); // Fallback to copy link
+        }
+    } catch (err) {
+        console.error('Error sharing:', err);
+    }
+  };
 
   return (
     <motion.div
@@ -189,6 +223,10 @@ const MusicPage = () => {
                 </span>
                 {/* Removed Heart icon and follower count */}
                 <span className="flex items-center gap-1">
+                  <Eye className="w-4 h-4" /> {/* Added Eye icon for views */}
+                  1.5M views
+                </span>
+                <span className="flex items-center gap-1">
                   <Music className="w-4 h-4" />
                   Electronic • Synthwave
                 </span>
@@ -202,11 +240,32 @@ const MusicPage = () => {
               >
                 {/* Removed Play button */}
                 <motion.button
-                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold transition-colors`}
+                  onClick={handleFollowToggle}
+                  className={`${isFollowing ? 'bg-purple-600 text-white' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold transition-colors`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Follow
+                  {isFollowing ? 'Following' : 'Follow'}
+                </motion.button>
+
+                <motion.button
+                  onClick={handleCopyLink}
+                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link className="w-5 h-5" />
+                  Copy Link
+                </motion.button>
+
+                <motion.button
+                  onClick={handleShare}
+                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Share2 className="w-5 h-5" />
+                  Share
                 </motion.button>
 
                 <motion.button
@@ -217,6 +276,18 @@ const MusicPage = () => {
                   <MoreHorizontal className="w-6 h-6" />
                 </motion.button>
               </motion.div>
+              <AnimatePresence>
+                {showCopyMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="mt-4 text-center text-sm font-medium text-green-500"
+                  >
+                    Link copied to clipboard!
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -278,8 +349,9 @@ const MusicPage = () => {
 
                 {/* Removed Waveform Visualization */}
 
-                {/* Play Count */}
-                <div className={`hidden md:block text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20`}>
+                {/* Play Count with Eye icon */}
+                <div className={`hidden md:flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20`}>
+                  <Eye className="w-4 h-4" />
                   {track.plays}
                 </div>
 
