@@ -74,7 +74,7 @@ const MusicPage = () => {
       id: 3,
       title: "Elixr Set (Open)",
       artist: "SUNAME",
-      album: "City Lights EP",
+      album: "Elixir",
       duration: "3:56",
       releaseDate: "2024-10-10",
       plays: "692,134",
