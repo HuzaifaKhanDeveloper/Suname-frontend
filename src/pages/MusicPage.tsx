@@ -72,8 +72,8 @@ const MusicPage = () => {
     },
     {
       id: 3,
-      title: "Urban Pulse",
-      artist: "SUNAME ft. Nova",
+      title: "Elixr Set (Open)",
+      artist: "SUNAME",
       album: "City Lights EP",
       duration: "3:56",
       releaseDate: "2024-10-10",
