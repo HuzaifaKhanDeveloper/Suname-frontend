@@ -297,7 +297,7 @@ const MusicPage = () => {
                 </span>
                 <span className="flex items-center gap-1">
                   <Music className="w-4 h-4" />
-                  Electronic • Synthwave
+                  TECH HOUSE | MELODIC TECHNO | TECHNO
                 </span>
               </motion.div>
 
