@@ -114,12 +114,12 @@ const MusicPage = () => {
       title: "SUNDAY MIX - #003",
       artist: "SUNAME ",
       album: "Space Odyssey",
-      duration: "1:00:49",
+      duration: "47:49",
       releaseDate: "2024-07-01",
-      plays: "523,847",
+      plays: "6",
       genre: "Space Ambient",
       imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
-      soundCloudLink: "https://soundcloud.com/suname/cosmic-drift"
+      soundCloudLink: "https://soundcloud.com/sunamemusic/suname-sunday-mix-003?si=7f9915aa1e954a12b9027600056bcf99"
       ,waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
     }
   ];
