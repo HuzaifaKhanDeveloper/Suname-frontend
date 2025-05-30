@@ -80,7 +80,7 @@ const MusicPage = () => {
       plays: "29",
       genre: "Future Bass",
       imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
-      soundCloudLink: "https://soundcloud.com/suname/urban-pulse",
+      soundCloudLink: "https://soundcloud.com/sunamemusic/elixr-full-set-preview?si=eee5c25d71814cbe94feaa432e3ab6ea",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2)
     },
     {
