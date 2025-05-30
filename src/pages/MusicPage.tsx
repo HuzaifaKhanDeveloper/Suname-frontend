@@ -4,7 +4,6 @@ import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
 import {
   Share2,
-  Download,
   MoreHorizontal,
   Headphones,
   Music,
@@ -17,33 +16,34 @@ const MusicPage = () => {
   const { isDarkMode } = useTheme();
   const [isFollowing, setIsFollowing] = useState(false);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
-  const [showMoreOptions, setShowMoreOptions] = useState(false);
-  const moreOptionsRef = useRef(null);
+  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for main header dropdown
+  const [openTrackOptionsId, setOpenTrackOptionsId] = useState(null); // State for track-specific dropdown
+  const mainMoreOptionsRef = useRef(null);
+  const trackOptionsRefs = useRef({}); // Ref for each track's dropdown
 
-  // Effect to close dropdown when clicking outside
+  // Effect to close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (moreOptionsRef.current && !moreOptionsRef.current.contains(event.target)) {
+      // Close main dropdown
+      if (mainMoreOptionsRef.current && !mainMoreOptionsRef.current.contains(event.target)) {
         setShowMoreOptions(false);
       }
+      // Close track-specific dropdowns
+      Object.keys(trackOptionsRefs.current).forEach(id => {
+        if (trackOptionsRefs.current[id] && !trackOptionsRefs.current[id].contains(event.target)) {
+          setOpenTrackOptionsId(null);
+        }
+      });
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [moreOptionsRef]);
+  }, [mainMoreOptionsRef, trackOptionsRefs]);
 
 
-  const soundCloudLinks = [
-    "https://soundcloud.com/suname/midnight-echoes",
-    "https://soundcloud.com/suname/neon-dreams",
-    "https://soundcloud.com/suname/urban-pulse",
-    "https://soundcloud.com/suname/ethereal-waves",
-    "https://soundcloud.com/suname/digital-rain",
-    "https://soundcloud.com/suname/cosmic-drift"
-  ];
-
+  // Removed the general soundCloudLinks array as tracks will now have specific links
   const tracks = [
     {
       id: 1,
@@ -55,6 +55,7 @@ const MusicPage = () => {
       plays: "847,592",
       genre: "Electronic",
       imageUrl: "https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=800",
+      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes", // Specific link
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.1) * 0.5 + Math.random() * 0.3)
     },
     {
@@ -67,6 +68,7 @@ const MusicPage = () => {
       plays: "1,203,847",
       genre: "Synthwave",
       imageUrl: "https://images.pexels.com/photos/1389429/pexels-photo-1389429.jpeg?auto=compress&cs=tinysrgb&w=800",
+      soundCloudLink: "https://soundcloud.com/suname/neon-dreams", // Specific link
       waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.15) * 0.4 + Math.random() * 0.4)
     },
     {
@@ -79,6 +81,7 @@ const MusicPage = () => {
       plays: "692,134",
       genre: "Future Bass",
       imageUrl: "https://images.pexels.com/photos/1699161/pexels-photo-1699161.jpeg?auto=compress&cs=tinysrgb&w=800",
+      soundCloudLink: "https://soundcloud.com/suname/urban-pulse", // Specific link
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.08) * 0.6 + Math.random() * 0.2)
     },
     {
@@ -91,6 +94,7 @@ const MusicPage = () => {
       plays: "434,921",
       genre: "Ambient",
       imageUrl: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=800",
+      soundCloudLink: "https://soundcloud.com/suname/ethereal-waves", // Specific link
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.05) * 0.3 + Math.random() * 0.5)
     },
     {
@@ -103,6 +107,7 @@ const MusicPage = () => {
       plays: "1,847,293",
       genre: "Cyberpunk",
       imageUrl: "https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=800",
+      soundCloudLink: "https://soundcloud.com/suname/digital-rain", // Specific link
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.12) * 0.7 + Math.random() * 0.3)
     },
     {
@@ -115,62 +120,65 @@ const MusicPage = () => {
       plays: "523,847",
       genre: "Space Ambient",
       imageUrl: "https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=800",
-      waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
+      soundCloudLink: "https://soundcloud.com/suname/cosmic-drift" // Specific link
+      ,waveform: Array.from({ length: 100 }, (_, i) => Math.cos(i * 0.03) * 0.4 + Math.random() * 0.4)
     }
   ];
 
   const handleTrackClick = (trackId) => {
-    // Opens the SoundCloud link directly as play functionality is removed
-    const randomLink = soundCloudLinks[Math.floor(Math.random() * soundCloudLinks.length)];
-    window.open(randomLink, '_blank');
+    // Opens the SoundCloud link directly for the clicked track (if available)
+    const track = tracks.find(t => t.id === trackId);
+    if (track && track.soundCloudLink) {
+      window.open(track.soundCloudLink, '_blank');
+    } else {
+      console.warn('SoundCloud link not found for this track.');
+    }
   };
 
   const handleFollowToggle = () => {
     setIsFollowing(prev => !prev);
   };
 
-  const handleCopyLink = () => {
-    const currentUrl = window.location.href;
+  const handleCopyLink = (linkToCopy) => {
     try {
-      // Use document.execCommand('copy') for clipboard operations in iframes
       const tempInput = document.createElement('textarea');
-      tempInput.value = currentUrl;
+      tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
       setTimeout(() => setShowCopyMessage(false), 2000); // Hide message after 2 seconds
-      setShowMoreOptions(false); // Close dropdown after action
+      setShowMoreOptions(false); // Close main dropdown
+      setOpenTrackOptionsId(null); // Close track dropdown
     } catch (err) {
       console.error('Failed to copy text: ', err);
-      // Optionally, show a fallback message or handle error
     }
   };
 
-  const handleShare = async () => {
+  const handleShare = async (linkToShare, title, text) => {
     const shareData = {
-        title: 'Check out this music page!',
-        text: 'Listen to amazing tracks by SUNAME.',
-        url: window.location.href,
+        title: title || 'Check out this music!',
+        text: text || 'Listen to amazing tracks by SUNAME.',
+        url: linkToShare,
     };
     try {
         if (navigator.share) {
             await navigator.share(shareData);
         } else {
-            // Fallback for browsers that do not support navigator.share
             console.log('Web Share API not supported. Copying link instead.');
-            handleCopyLink(); // Fallback to copy link
+            handleCopyLink(linkToShare); // Fallback to copy link
         }
-        setShowMoreOptions(false); // Close dropdown after action
+        setShowMoreOptions(false); // Close main dropdown
+        setOpenTrackOptionsId(null); // Close track dropdown
     } catch (err) {
         console.error('Error sharing:', err);
     }
   };
 
-  // Function to open a random SoundCloud link
+  // Function to open a random SoundCloud link (used for main button)
   const handleListenInSoundCloud = () => {
-    const randomLink = soundCloudLinks[Math.floor(Math.random() * soundCloudLinks.length)];
+    const randomLink = tracks[Math.floor(Math.random() * tracks.length)].soundCloudLink;
     window.open(randomLink, '_blank');
   };
 
@@ -289,8 +297,8 @@ const MusicPage = () => {
                   Listen in SoundCloud
                 </motion.button>
 
-                {/* More Options Dropdown */}
-                <div className="relative" ref={moreOptionsRef}>
+                {/* Main More Options Dropdown */}
+                <div className="relative" ref={mainMoreOptionsRef}>
                   <motion.button
                     onClick={() => setShowMoreOptions(prev => !prev)}
                     className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors rounded-full flex items-center justify-center`}
@@ -311,7 +319,7 @@ const MusicPage = () => {
                         className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-10 border origin-top-right overflow-hidden`}
                       >
                         <motion.button
-                          onClick={handleCopyLink}
+                          onClick={() => handleCopyLink(window.location.href)}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
                           whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.97 }}
@@ -321,7 +329,7 @@ const MusicPage = () => {
                           Copy Link
                         </motion.button>
                         <motion.button
-                          onClick={handleShare}
+                          onClick={() => handleShare(window.location.href, 'Check out this music page!', 'Listen to amazing tracks by SUNAME.')}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
                           whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.97 }}
@@ -378,7 +386,7 @@ const MusicPage = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index }}
-                onClick={() => handleTrackClick(track.id)}
+                onClick={() => handleTrackClick(track.id)} // Open track's SoundCloud link on click
                 whileHover={{ scale: 1.03, y: -2, boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)' }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -421,12 +429,55 @@ const MusicPage = () => {
                     {track.duration}
                   </span>
 
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <MoreHorizontal className={`w-5 h-5 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'} transition-colors`} />
-                  </motion.button>
+                  {/* Track-specific More Options Dropdown */}
+                  <div className="relative" ref={el => trackOptionsRefs.current[track.id] = el}>
+                    <motion.button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent track click from opening SoundCloud link
+                        setOpenTrackOptionsId(openTrackOptionsId === track.id ? null : track.id);
+                      }}
+                      className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-2 transition-colors rounded-full flex items-center justify-center`}
+                      whileHover={{ scale: 1.15, rotate: 90, backgroundColor: isDarkMode ? 'rgba(55, 65, 81, 0.6)' : 'rgba(243, 244, 246, 0.6)' }}
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                    >
+                      <MoreHorizontal className="w-5 h-5" />
+                    </motion.button>
+
+                    <AnimatePresence>
+                      {openTrackOptionsId === track.id && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-20 border origin-top-right overflow-hidden`}
+                        >
+                          <motion.button
+                            onClick={() => handleCopyLink(track.soundCloudLink)}
+                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
+                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
+                          >
+                            <Link className="w-4 h-4" />
+                            Copy Track Link
+                          </motion.button>
+                          <motion.button
+                            onClick={() => handleShare(track.soundCloudLink, `Listen to "${track.title}" by ${track.artist}`, `Check out "${track.title}" by ${track.artist} on SoundCloud!`)}
+                            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
+                            whileHover={{ x: 10, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
+                          >
+                            <Share2 className="w-4 h-4" />
+                            Share Track
+                          </motion.button>
+                          {/* Add more options like "Add to Playlist" if needed */}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </motion.div>
             ))}
