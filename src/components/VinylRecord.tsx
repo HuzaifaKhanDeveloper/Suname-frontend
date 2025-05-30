@@ -6,7 +6,6 @@ import { useTheme } from '../context/ThemeContext';
 interface VinylRecordProps {
   size?: number;
   isPlaying?: boolean;
-  onTogglePlay?: () => void;
   className?: string;
   albumCover?: string;
 }
@@ -14,14 +13,12 @@ interface VinylRecordProps {
 const VinylRecord: React.FC<VinylRecordProps> = ({
   size = 260,
   isPlaying = false,
-  onTogglePlay,
   className = '',
   albumCover = 'https://images.pexels.com/photos/167092/pexels-photo-167092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 }) => {
   const { isDarkMode } = useTheme();
   const [hover, setHover] = useState(false);
   
-  // Calculate dimensions based on size
   const vinylSize = size;
   const labelSize = size * 0.4;
   const holeSIze = size * 0.05;
@@ -40,7 +37,7 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
         tiltMaxAngleY={10}
       >
         <motion.div
-          className="relative cursor-pointer"
+          className="relative"
           style={{ width: vinylSize, height: vinylSize }}
           animate={{ 
             rotate: isPlaying ? 360 : 0,
@@ -62,9 +59,7 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
           whileHover={{ scale: 1.02 }}
           onHoverStart={() => setHover(true)}
           onHoverEnd={() => setHover(false)}
-          onClick={onTogglePlay}
         >
-          {/* Vinyl record base with glow effect */}
           <motion.div 
             className="absolute inset-0 rounded-full bg-black"
             animate={{
@@ -79,7 +74,6 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
             transition={{ duration: 0.3 }}
           />
 
-          {/* Vinyl grooves with animation */}
           {[...Array(8)].map((_, i) => (
             <motion.div
               key={i}
@@ -112,7 +106,6 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
             />
           ))}
 
-          {/* Record label/album cover with hover effect */}
           <motion.div
             className="absolute rounded-full overflow-hidden"
             style={{
@@ -142,7 +135,6 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
               }}
             />
 
-            {/* Center hole with pulsing effect */}
             <motion.div
               className="absolute rounded-full bg-black"
               style={{
@@ -165,19 +157,6 @@ const VinylRecord: React.FC<VinylRecordProps> = ({
         </motion.div>
       </Tilt>
 
-      {/* Play button hint with fade effect */}
-      <motion.div
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-xs text-center w-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: hover ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <span className={isDarkMode ? "text-gray-300" : "text-gray-700"}>
-          {isPlaying ? "Click to pause" : "Click to play"}
-        </span>
-      </motion.div>
-
-      {/* Floating particles effect */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         animate={{
