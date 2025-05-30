@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Added useRef and useEffect for dropdown
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
@@ -14,10 +14,25 @@ import {
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
-  // Removed likedTracks state as heart/like functionality is being removed
-  // const [likedTracks, setLikedTracks] = useState(new Set());
   const [isFollowing, setIsFollowing] = useState(false); // State for follow button
   const [showCopyMessage, setShowCopyMessage] = useState(false); // State for copy link message
+  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for showing more options dropdown
+  const moreOptionsRef = useRef(null); // Ref for the more options dropdown
+
+  // Effect to close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (moreOptionsRef.current && !moreOptionsRef.current.contains(event.target)) {
+        setShowMoreOptions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [moreOptionsRef]);
+
 
   const soundCloudLinks = [
     "https://soundcloud.com/suname/midnight-echoes",
@@ -125,6 +140,7 @@ const MusicPage = () => {
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
       setTimeout(() => setShowCopyMessage(false), 2000); // Hide message after 2 seconds
+      setShowMoreOptions(false); // Close dropdown after action
     } catch (err) {
       console.error('Failed to copy text: ', err);
       // Optionally, show a fallback message or handle error
@@ -145,6 +161,7 @@ const MusicPage = () => {
             console.log('Web Share API not supported. Copying link instead.');
             handleCopyLink(); // Fallback to copy link
         }
+        setShowMoreOptions(false); // Close dropdown after action
     } catch (err) {
         console.error('Error sharing:', err);
     }
@@ -248,33 +265,44 @@ const MusicPage = () => {
                   {isFollowing ? 'Following' : 'Follow'}
                 </motion.button>
 
-                <motion.button
-                  onClick={handleCopyLink}
-                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link className="w-5 h-5" />
-                  Copy Link
-                </motion.button>
+                {/* Removed direct Copy Link and Share buttons */}
 
-                <motion.button
-                  onClick={handleShare}
-                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Share2 className="w-5 h-5" />
-                  Share
-                </motion.button>
+                <div className="relative" ref={moreOptionsRef}> {/* Wrap for positioning dropdown */}
+                  <motion.button
+                    onClick={() => setShowMoreOptions(prev => !prev)} // Toggle dropdown visibility
+                    className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <MoreHorizontal className="w-6 h-6" />
+                  </motion.button>
 
-                <motion.button
-                  className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <MoreHorizontal className="w-6 h-6" />
-                </motion.button>
+                  <AnimatePresence>
+                    {showMoreOptions && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-2 z-10 border`}
+                      >
+                        <button
+                          onClick={handleCopyLink}
+                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                        >
+                          <Link className="w-4 h-4" />
+                          Copy Link
+                        </button>
+                        <button
+                          onClick={handleShare}
+                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                        >
+                          <Share2 className="w-4 h-4" />
+                          Share
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </motion.div>
               <AnimatePresence>
                 {showCopyMessage && (
