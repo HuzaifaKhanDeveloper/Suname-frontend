@@ -88,7 +88,7 @@ const MusicPage = () => {
       title: "SUNDAY MIX - #001",
       artist: "SUNAME",
       album: "Ambient Sessions",
-      duration: "5:18",
+      duration: "1:00:49",
       releaseDate: "2024-09-22",
       plays: "434,921",
       genre: "Ambient",
