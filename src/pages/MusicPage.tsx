@@ -85,7 +85,7 @@ const MusicPage = () => {
     },
     {
       id: 4,
-      title: "Ethereal Waves",
+      title: "SUNDAY MIX - #001",
       artist: "SUNAME",
       album: "Ambient Sessions",
       duration: "5:18",
