@@ -25,7 +25,6 @@ const DemosPage = () => {
     e.stopPropagation();
     setDragActive(false);
 
-    // Simulate upload
     setUploadSuccess(true);
     setTimeout(() => setUploadSuccess(false), 3000);
   };
@@ -66,14 +65,14 @@ const DemosPage = () => {
           } backdrop-blur-sm shadow-xl`}
         >
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Demo Guidelines */}
+            {}
             <div className="text-left">
               <h2 className={`text-2xl font-bold mb-6 ${
                 isDarkMode ? 'text-white' : 'text-gray-900'
               }`}>
                 Demo Guidelines
               </h2>
-              
+
               <div className="space-y-6">
                 <div>
                   <h3 className={`text-lg font-semibold mb-2 ${
@@ -114,7 +113,7 @@ const DemosPage = () => {
               </div>
             </div>
 
-            {/* Upload Section */}
+            {}
             <div>
               <motion.div
                 onDragEnter={handleDrag}
@@ -187,7 +186,7 @@ const DemosPage = () => {
           </div>
         </motion.div>
 
-        {/* Credit section outside the grid and card, centered */}
+        {}
         <motion.section
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

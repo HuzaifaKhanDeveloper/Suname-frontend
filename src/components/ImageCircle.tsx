@@ -1,13 +1,24 @@
 import React from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
-interface ImageCircleProps {
-  images: { src: string; alt: string; }[];
-  isDarkRealm: boolean;
-  currentImageIndex: number;
+interface ImageProps {
+  src: string;
+  alt: string;
 }
 
-const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentImageIndex }) => {
+interface ImageCircleProps {
+  images: ImageProps[];
+  isDarkRealm: boolean;
+  currentImageIndex: number;
+  imagesNeedingAdjustment?: string[];
+}
+
+const ImageCircle: React.FC<ImageCircleProps> = ({
+  images,
+  isDarkRealm,
+  currentImageIndex,
+  imagesNeedingAdjustment = [],
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [3, -3]);
@@ -32,6 +43,25 @@ const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentI
 
   const currentImage = images[currentImageIndex];
 
+  const borderColor = isDarkRealm ? 'rgba(48,63,159,0.8)' : 'rgba(255,190,0,1)'; 
+
+  const gradientBackground = isDarkRealm
+    ? [
+       'linear-gradient(0deg, rgba(48,63,159,0.6), transparent)',
+       'linear-gradient(90deg, rgba(48,63,159,0.6), transparent)',
+       'linear-gradient(180deg, rgba(48,63,159,0.6), transparent)',
+       'linear-gradient(270deg, rgba(48,63,159,0.6), transparent)'
+      ]
+    : [
+       'linear-gradient(0deg, rgba(255,210,0,0.9), transparent)', 
+       'linear-gradient(90deg, rgba(255,210,0,0.9), transparent)',
+       'linear-gradient(180deg, rgba(255,210,0,0.9), transparent)',
+       'linear-gradient(270deg, rgba(255,210,0,0.9), transparent)'];
+
+  const blurBackgroundColor = isDarkRealm ? 'rgba(139,92,246,0.5)' : 'rgba(255,160,0,0.9)'; 
+
+  const imageObjectPosition = imagesNeedingAdjustment.includes(currentImage?.src || '') ? '50% 30%' : 'center';
+
   return (
     <motion.div
       className="relative w-64 h-64 mx-auto mb-10 cursor-grab active:cursor-grabbing rounded-full overflow-hidden md:w-80 md:h-80 shadow-lg"
@@ -48,15 +78,7 @@ const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentI
       <motion.div
         className="absolute inset-0 rounded-full"
         animate={{
-          background: isDarkRealm
-            ? ['linear-gradient(0deg, rgba(48,63,159,0.6), transparent)',
-                'linear-gradient(90deg, rgba(48,63,159,0.6), transparent)',
-                'linear-gradient(180deg, rgba(48,63,159,0.6), transparent)',
-                'linear-gradient(270deg, rgba(48,63,159,0.6), transparent)']
-            : ['linear-gradient(0deg, rgba(255,165,0,0.6), transparent)',
-                'linear-gradient(90deg, rgba(255,165,0,0.6), transparent)',
-                'linear-gradient(180deg, rgba(255,165,0,0.6), transparent)',
-                'linear-gradient(270deg, rgba(255,165,0,0.6), transparent)']
+          background: gradientBackground
         }}
         transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       />
@@ -64,7 +86,7 @@ const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentI
       <AnimatePresence initial={false} mode="wait">
         {currentImage && (
           <motion.img
-            key={currentImage.src}
+            key={`${isDarkRealm ? 'dark' : 'light'}-${currentImage.src}`}
             src={currentImage.src}
             alt={currentImage.alt}
             className="w-full h-full object-cover rounded-full border-4 absolute"
@@ -73,7 +95,8 @@ const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentI
             animate="animate"
             exit="exit"
             style={{
-              borderColor: isDarkRealm ? 'rgba(48,63,159,0.8)' : 'rgba(255,165,0,0.8)'
+              borderColor: borderColor,
+              objectPosition: imageObjectPosition,
             }}
           />
         )}
@@ -82,7 +105,7 @@ const ImageCircle: React.FC<ImageCircleProps> = ({ images, isDarkRealm, currentI
       <motion.div
         className="absolute inset-0 rounded-full blur-xl opacity-0 transition-opacity duration-300"
         animate={{
-          backgroundColor: isDarkRealm ? 'rgba(139,92,246,0.5)' : 'rgba(255,127,80,0.5)'
+          backgroundColor: blurBackgroundColor
         }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       />

@@ -24,7 +24,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
   className = '',
 }) => {
   const { isDarkMode } = useTheme();
-  
+
   return (
     <motion.div 
       className={`relative overflow-hidden group rounded-2xl ${
@@ -53,7 +53,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
         damping: 20
       }}
     >
-      {/* Animated gradient background */}
+      {}
       <motion.div
         className="absolute inset-0 z-0 opacity-30"
         animate={{ 
@@ -71,7 +71,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
         }}
       />
 
-      {/* Background image with parallax effect */}
+      {}
       <motion.div 
         className="absolute inset-0 z-0 opacity-30 group-hover:opacity-40 transition-opacity duration-500"
         whileHover={{ scale: 1.1 }}
@@ -83,8 +83,8 @@ const MusicCard: React.FC<MusicCardProps> = ({
           className="w-full h-full object-cover"
         />
       </motion.div>
-      
-      {/* Content */}
+
+      {}
       <div className="relative z-10 p-6 flex flex-col h-full">
         <div className="flex-1">
           <motion.h3 
@@ -97,7 +97,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
           >
             {title}
           </motion.h3>
-          
+
           {description && (
             <motion.p 
               className={`text-sm mb-4 ${
@@ -111,9 +111,9 @@ const MusicCard: React.FC<MusicCardProps> = ({
             </motion.p>
           )}
         </div>
-        
+
         <div className="flex justify-between items-center mt-4">
-          {/* Audio visualization */}
+          {}
           <div className="flex-1">
             {isPlaying && (
               <AudioVisualizer 
@@ -124,8 +124,8 @@ const MusicCard: React.FC<MusicCardProps> = ({
               />
             )}
           </div>
-          
-          {/* Action buttons */}
+
+          {}
           <div className="flex space-x-2">
             <motion.button
               className={`p-3 rounded-full ${
@@ -148,7 +148,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
             >
               {isPlaying ? <Pause size={16} /> : <Play size={16} />}
             </motion.button>
-            
+
             {link && (
               <motion.a
                 href={link}
@@ -177,7 +177,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
           </div>
         </div>
 
-        {/* Hover effect overlay */}
+        {}
         <motion.div
           className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           initial={false}
@@ -191,7 +191,7 @@ const MusicCard: React.FC<MusicCardProps> = ({
           transition={{ duration: 1, repeat: Infinity }}
         />
 
-        {/* Floating particles effect */}
+        {}
         <motion.div
           className="absolute inset-0 pointer-events-none"
           initial={false}

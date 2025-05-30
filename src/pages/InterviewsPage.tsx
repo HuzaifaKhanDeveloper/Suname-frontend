@@ -88,13 +88,13 @@ const InterviewsPage = () => {
                       {interview.title}
                     </h2>
                   </div>
-                  
+
                   <p className={`text-sm mb-2 ${
                     isDarkMode ? 'text-gray-400' : 'text-gray-600'
                   }`}>
                     {interview.platform} • {interview.date}
                   </p>
-                  
+
                   <p className={`${
                     isDarkMode ? 'text-gray-300' : 'text-gray-700'
                   }`}>
@@ -141,7 +141,7 @@ const InterviewsPage = () => {
           }`}>
             More interviews and media features coming soon.
           </p>
-          
+
           <motion.a
             href="#"
             className={`inline-flex items-center space-x-2 px-8 py-4 rounded-full text-white ${
@@ -157,7 +157,7 @@ const InterviewsPage = () => {
           </motion.a>
         </motion.div>
 
-        {/* Credit */}
+        {}
         <motion.section
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

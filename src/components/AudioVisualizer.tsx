@@ -33,9 +33,8 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     };
   }, []);
 
-  // Use fewer bars on mobile if responsive
   const effectiveBarCount = responsive && isCompact ? Math.min(6, barCount) : barCount;
-  
+
   const playNote = (index: number) => {
     if (synth && !isPlaying) {
       setIsPlaying(true);
@@ -52,18 +51,18 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
       style={{ height: `${height}px`, ...style }}
     >
       {[...Array(effectiveBarCount)].map((_, i) => {
-        // Create a unique animation duration for each bar
+
         const duration = 1 + (i % 4) * 0.1;
-        // Make a unique pattern for all bars
+
         const heightPercentage = 30 + ((i % 3) * 25);
-        
+
         return (
           <motion.div
             key={i}
             className="rounded-full cursor-pointer"
             style={{ 
               backgroundColor: color,
-              // Alternate widths for visual interest
+
               width: isCompact ? '3px' : `${3 + (i % 3)}px`,
             }}
             animate={{
@@ -79,7 +78,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
                 duration,
                 repeat: Infinity,
                 ease: [0.45, 0.05, 0.55, 0.95],
-                // Offset the start time to create a wave effect
+
                 delay: i * 0.07,
               },
               scale: {

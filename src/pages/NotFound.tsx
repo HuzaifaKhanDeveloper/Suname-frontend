@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { ArrowLeft, Music2 } from 'lucide-react';
+import { biography } from '../data/biography';
 import AudioVisualizer from '../components/AudioVisualizer';
 
 const NotFound: React.FC = () => {
@@ -14,7 +15,7 @@ const NotFound: React.FC = () => {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex flex-col items-center justify-between px-4 pt-20 pb-10"
+      className="min-h-screen w-full flex flex-col items-center justify-center px-4" 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -37,7 +38,7 @@ const NotFound: React.FC = () => {
             className={`${isDarkMode ? 'text-primary-400' : 'text-primary-600'}`} 
           />
         </motion.div>
-        
+
         <motion.h1
           className={`text-4xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
           initial={{ y: 20, opacity: 0 }}
@@ -46,7 +47,7 @@ const NotFound: React.FC = () => {
         >
           404 - Page Not Found
         </motion.h1>
-        
+
         <motion.p
           className={`text-lg mb-8 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
           initial={{ y: 20, opacity: 0 }}
@@ -55,14 +56,14 @@ const NotFound: React.FC = () => {
         >
           The frequency you're looking for seems to be out of range.
         </motion.p>
-        
+
         <AudioVisualizer 
           height={60} 
           barCount={8} 
           className="mb-8"
-          color={isDarkMode ? 'rgb(139, 92, 246)' : 'rgb(109, 40, 217)'}
+          color={isDarkMode ? 'rgb(139, 92, 246)' : 'rgb(139, 92, 246)'} 
         />
-        
+
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -85,19 +86,25 @@ const NotFound: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Credit Footer */}
-      <div className="text-sm text-center mt-12">
-        <p className={isDarkMode ? 'text-gray-500' : 'text-gray-600'}>
-          Designed & built with ❤️ by <a 
-            href="https://yourwebsite.com" 
-            target="_blank" 
+      {}
+      <motion.section
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="text-center mt-12"
+      >
+        <p className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}> {}
+          Artwork & Website by{' '}
+          <a
+            href={biography.designer.twitter}
+            target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-primary-500"
+            className="text-primary-500 hover:text-primary-400 underline"
           >
-            SUNAME
+            {biography.designer.name}
           </a>
         </p>
-      </div>
+      </motion.section>
     </motion.div>
   );
 };

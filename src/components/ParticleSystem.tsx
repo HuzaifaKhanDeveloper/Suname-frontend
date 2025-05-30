@@ -14,11 +14,15 @@ import {
 interface ParticleSystemProps {
   particleCount?: number;
   className?: string;
+  isDarkRealm: boolean;
+  customColors: string[];
 }
 
 const ParticleSystem: React.FC<ParticleSystemProps> = ({
   particleCount = 20,
   className = '',
+  isDarkRealm,
+  customColors,
 }) => {
   const getRandomIcon = useCallback((index: number) => {
     const icons = [Music, Disc, Headphones, Radio, Mic, Speaker, Music2, Music4];
@@ -36,15 +40,23 @@ const ParticleSystem: React.FC<ParticleSystemProps> = ({
 
         const IconComponent = getRandomIcon(index);
 
+        const particleColor = customColors[index % customColors.length];
+
+        const shadowEffect = isDarkRealm
+          ? `drop-shadow(0px 0px 3px ${particleColor}) drop-shadow(0px 0px 6px ${particleColor})`
+          : `drop-shadow(0px 0px 2px ${particleColor}) drop-shadow(0px 0px 4px ${particleColor})`;
+
         return (
           <motion.div
             key={index}
-            className="absolute text-primary-400 opacity-10"
+            className="absolute opacity-10"
             style={{
               left,
               top,
               width: size,
               height: size,
+              color: particleColor,
+              filter: shadowEffect,
             }}
             animate={{
               y: [0, -100, 0],
@@ -69,4 +81,4 @@ const ParticleSystem: React.FC<ParticleSystemProps> = ({
   );
 };
 
-export default ParticleSystem; 
+export default ParticleSystem;

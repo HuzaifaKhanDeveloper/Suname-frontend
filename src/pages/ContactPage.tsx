@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // Import AnimatePresence
+import React, { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence, Variants } from 'framer-motion'; 
 import { Mail, ExternalLink, Send } from 'lucide-react';
 import { biography } from '../data/biography';
 import { useTheme } from '../context/ThemeContext';
 import AudioVisualizer from '../components/AudioVisualizer';
 import { useInView } from 'react-intersection-observer';
+import { IconType } from 'react-icons'; 
+import { FaSoundcloud, FaInstagram, FaTwitter, FaTiktok, FaYoutube, FaSpotify, FaApple } from 'react-icons/fa';
 
-type NotificationType = 'success' | 'error'; // Define NotificationType
+type NotificationType = 'success' | 'error'; 
+
+interface SocialPlatform {
+  name: string;
+  icon: IconType; 
+  url: string;
+  color: string;
+  buttonVariants?: Variants; 
+}
 
 const ContactPage = () => {
   const { isDarkMode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [notification, setNotification] = useState<{ message: string; type: NotificationType } | null>(null); // Add notification state
+  const [notification, setNotification] = useState<{ message: string; type: NotificationType } | null>(null); 
   const { ref: formRef, inView: formInView } = useInView({ triggerOnce: true });
 
   const showNotification = (message: string, type: NotificationType) => {
     setNotification({ message, type });
-    setTimeout(() => setNotification(null), 3000); // Notification disappears after 3 seconds
+    setTimeout(() => setNotification(null), 3000); 
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => { // Change type to HTMLFormElement
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -37,7 +47,7 @@ const ContactPage = () => {
 
       if (response.ok) {
         showNotification('Your message has been sent!', 'success');
-        form.reset(); // Reset the form fields
+        form.reset(); 
       } else {
         const data = await response.json();
         if (data.errors) {
@@ -77,16 +87,32 @@ const ContactPage = () => {
     },
   };
 
-  // Social media platforms with FontAwesome classes
-  const socialPlatforms = [
-    { name: 'Instagram', icon: 'fab fa-instagram', url: biography.socials.instagram, color: '#E4405F' },
-    { name: 'TikTok', icon: 'fab fa-tiktok', url: biography.socials.tiktok, color: '#000000' },
-    { name: 'SoundCloud', icon: 'fab fa-soundcloud', url: biography.socials.soundcloud, color: '#FF5500' },
-    { name: 'Twitter', icon: 'fab fa-twitter', url: biography.socials.twitter, color: '#1DA1F2' },
-    { name: 'Spotify', icon: 'fab fa-spotify', url: biography.socials.spotify, color: '#1DB954' },
-    { name: 'Apple Music', icon: 'fab fa-apple', url: biography.socials.appleMusic, color: '#FA243C' },
-    { name: 'YouTube', icon: 'fab fa-youtube', url: biography.socials.youtube, color: '#FF0000' },
-  ];
+  const socialPlatforms = useMemo(() => {
+    return [
+      { name: 'Instagram', icon: FaInstagram, url: biography.socials.instagram, color: '#E4405F' },
+      { name: 'TikTok', icon: FaTiktok, url: biography.socials.tiktok, color: '#000000' },
+      { name: 'SoundCloud', icon: FaSoundcloud, url: biography.socials.soundcloud, color: '#FF5500' },
+      { name: 'Twitter', icon: FaTwitter, url: biography.socials.twitter, color: '#1DA1F2' },
+      { name: 'Spotify', icon: FaSpotify, url: biography.socials.spotify, color: '#1DB954' },
+      { name: 'Apple Music', icon: FaApple, url: biography.socials.appleMusic, color: '#FA243C' },
+      { name: 'YouTube', icon: FaYoutube, url: biography.socials.youtube, color: '#FF0000' },
+    ].map((item: SocialPlatform, index) => ({ 
+      ...item,
+
+      buttonVariants: {
+        animate: {
+          y: [0, Math.random() * 5 - 2.5, 0], 
+          x: [0, Math.random() * 5 - 2.5, 0], 
+          transition: {
+            duration: 3 + Math.random() * 1, 
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: index * 0.1 
+          },
+        },
+      },
+    }));
+  }, []);
 
   return (
     <>
@@ -112,13 +138,7 @@ const ContactPage = () => {
         exit={{ opacity: 0 }}
         className="min-h-screen pt-24 pb-12 px-4"
       >
-        {/* FontAwesome CDN */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-          crossOrigin="anonymous"
-        />
+        {}
 
         <div className="max-w-4xl mx-auto">
           <motion.h1
@@ -132,9 +152,9 @@ const ContactPage = () => {
             Contact SUNAME
           </motion.h1>
 
-          {/* Grid container for main content */}
+          {}
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Contact Information */}
+            {}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -145,7 +165,7 @@ const ContactPage = () => {
                   : 'bg-white/80 border border-gray-200'
               } backdrop-blur-sm shadow-xl relative overflow-hidden`}
             >
-              {/* Animated background gradient */}
+              {}
               <motion.div
                 className="absolute inset-0 -z-10"
                 animate={{
@@ -234,38 +254,52 @@ const ContactPage = () => {
                     Connect on Social Media
                   </h2>
                   <motion.div 
-                    className="flex flex-wrap gap-4"
+                    className="grid grid-cols-2 gap-4" 
                     variants={containerVariants}
                   >
-                    {socialPlatforms.map((platform) => (
-                      <motion.a
-                        key={platform.name}
-                        href={platform.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                          isDarkMode 
-                            ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white' 
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
-                        }`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <i 
-                          className={platform.icon}
-                          style={{ color: platform.color, fontSize: '20px' }}
-                        />
-                        <span className="text-sm font-medium">
-                          {platform.name}
-                        </span>
-                      </motion.a>
-                    ))}
+                    {socialPlatforms.map((platform: SocialPlatform) => { 
+                      const IconComponent = platform.icon; 
+                      return (
+                        <motion.a
+                          key={platform.name}
+                          href={platform.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
+                            ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
+                          `}
+                          whileHover={{ scale: 1.05 }} 
+                          variants={platform.buttonVariants} 
+                          animate="animate"
+                        >
+                          <motion.span
+                            className="inline-block mr-2 text-2xl" 
+                            style={{
+                              color: isDarkMode ? '#FFFFFF' : '#333333', 
+                            }}
+                            whileHover={{
+                              scale: 1.2, 
+                              color: isDarkMode ? '#A78BFA' : '#F97316', 
+                            }}
+                            transition={{
+                              color: { duration: 0.4, ease: "easeOut" },
+                              scale: { type: "spring", stiffness: 400, damping: 30 }
+                            }}
+                          >
+                            <IconComponent /> {}
+                          </motion.span>
+                          <span className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                            {platform.name}
+                          </span>
+                        </motion.a>
+                      );
+                    })}
                   </motion.div>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {}
             <motion.div
               ref={formRef}
               initial="hidden"
@@ -288,9 +322,9 @@ const ContactPage = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {[
-                  { id: 'name', label: 'Name', type: 'text', name: 'name' }, // Add name attribute
-                  { id: 'email', label: 'Email', type: 'email', name: '_replyto' }, // Use _replyto for email
-                  { id: 'subject', label: 'Subject', type: 'text', name: 'subject' } // Add name attribute
+                  { id: 'name', label: 'Name', type: 'text', name: 'name' }, 
+                  { id: 'email', label: 'Email', type: 'email', name: '_replyto' }, 
+                  { id: 'subject', label: 'Subject', type: 'text', name: 'subject' } 
                 ].map((field) => (
                   <motion.div
                     key={field.id}
@@ -305,7 +339,7 @@ const ContactPage = () => {
                       whileFocus={{ scale: 1.02 }}
                       type={field.type}
                       id={field.id}
-                      name={field.name} // Set the name attribute
+                      name={field.name} 
                       required
                       className={`w-full px-4 py-2 rounded-lg ${
                         isDarkMode 
@@ -325,7 +359,7 @@ const ContactPage = () => {
                   <motion.textarea
                     whileFocus={{ scale: 1.02 }}
                     id="message"
-                    name="message" // Add name attribute for the message field
+                    name="message" 
                     rows={4}
                     required
                     className={`w-full px-4 py-2 rounded-lg ${
@@ -348,7 +382,7 @@ const ContactPage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {/* Button background animation */}
+                  {}
                   <motion.div
                     className="absolute inset-0 -z-10"
                     animate={{
@@ -360,7 +394,7 @@ const ContactPage = () => {
                     }}
                     transition={{ duration: 3, repeat: Infinity }}
                   />
-                  
+
                   <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                   {isSubmitting ? (
                     <motion.div
@@ -377,7 +411,7 @@ const ContactPage = () => {
             </motion.div>
           </div>
 
-          {/* Credit section outside the grid and centered */}
+          {}
           <motion.section
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

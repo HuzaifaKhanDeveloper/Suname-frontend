@@ -20,7 +20,7 @@ const EPKPage = () => {
       id: 'genres',
       icon: Music2,
       title: 'Genres',
-      content: biography.genres.join(', ')
+      content: biography.genres ? biography.genres.join(', ') : 'N/A'
     },
     {
       id: 'location',
@@ -44,7 +44,7 @@ const EPKPage = () => {
       className="min-h-screen pt-24 pb-12 px-4"
     >
       <div className="max-w-6xl mx-auto">
-        {/* Hero Section */}
+        {}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -59,7 +59,7 @@ const EPKPage = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-12 gap-8">
-          {/* Sidebar Navigation */}
+          {}
           <motion.div
             className="md:col-span-3"
             initial={{ x: -20, opacity: 0 }}
@@ -93,9 +93,9 @@ const EPKPage = () => {
             </div>
           </motion.div>
 
-          {/* Main Content Area */}
+          {}
           <div className="md:col-span-9">
-            {/* Artist Photos Grid */}
+            {}
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
               initial={{ y: 20, opacity: 0 }}
@@ -138,7 +138,7 @@ const EPKPage = () => {
               ))}
             </motion.div>
 
-            {/* Info Sections */}
+            {}
             <AnimatePresence mode="wait">
               {activeSection && (
                 <motion.div
@@ -162,7 +162,7 @@ const EPKPage = () => {
               )}
             </AnimatePresence>
 
-            {/* Social Links */}
+            {}
             <motion.div
               className="grid grid-cols-2 sm:grid-cols-4 gap-4"
               initial={{ y: 20, opacity: 0 }}
@@ -199,7 +199,7 @@ const EPKPage = () => {
           </div>
         </div>
 
-        {/* Credit */}
+        {}
         <motion.section
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

@@ -1,51 +1,18 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Send, Music2, Disc, Headphones, Radio } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext'; // Assuming this path is correct
-import AudioVisualizer from '../components/AudioVisualizer'; // Assuming this path is correct
-import ImageCircle from '../components/ImageCircle'; // Assuming this path is correct
+import { FaSoundcloud, FaInstagram, FaTwitter, FaTiktok, FaYoutube, FaSpotify, FaApple } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
+import AudioVisualizer from '../components/AudioVisualizer';
+import { biography } from '../data/biography';
 
 type NotificationType = 'success' | 'error';
 
 const BookingsPage = () => {
-  const { isDarkMode, isThemeLoaded } = useTheme(); 
+  const { isDarkMode, isThemeLoaded } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ message: string; type: NotificationType } | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const lightModeImages = useMemo(() => ([
-    { src: "/images/artist_main.jpg", alt: "SUNAME Main Artist" },
-    { src: "/images/artist_beachball.jpg", alt: "SUNAME Beachball Headshot" },
-    { src: "/images/artist_orange.jpg", alt: "SUNAME Orange Full Body" },
-  ]), []);
-
-  const darkModeImages = useMemo(() => ([
-    { src: "/images/darkPhoto1.jpg", alt: "SUNAME Dark Realm 1" },
-    { src: "/images/darkPhoto2.jpg", alt: "SUNAME Dark Realm 2" },
-    { src: "/images/darkPhoto3.jpg", alt: "SUNAME Dark Realm 3" },
-  ]), []);
-
-  // Determine which set of images to use based on the current theme
-  // This will re-evaluate on every render where isDarkMode might change
-  const imagesForCircle = isDarkMode ? darkModeImages : lightModeImages;
-
-  // Effect to cycle through images and reset index on mode change
-  useEffect(() => {
-    // Only proceed if the theme has loaded to avoid initial flash
-    // if (!isThemeLoaded) { // <--- This line depends on your ThemeContext providing isThemeLoaded
-    //   return;
-    // }
-
-    // Reset index to 0 immediately when the image set changes (due to mode switch)
-    setCurrentImageIndex(0);
-
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesForCircle.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [imagesForCircle, isDarkMode]); // Explicitly include isDarkMode here as well, though imagesForCircle should be enough
 
   const showNotification = (message: string, type: NotificationType) => {
     setNotification({ message, type });
@@ -100,6 +67,35 @@ const BookingsPage = () => {
     }));
   }, []);
 
+  // Define positions and animations for social icons
+  const socialIcons = useMemo(() => {
+    return [
+      { icon: FaSoundcloud, url: biography.socials.soundcloud, name: 'SoundCloud' },
+      { icon: FaInstagram, url: biography.socials.instagram, name: 'Instagram' },
+      { icon: FaTwitter, url: biography.socials.twitter, name: 'Twitter' },
+      { icon: FaTiktok, url: biography.socials.tiktok, name: 'TikTok' },
+      { icon: FaYoutube, url: biography.socials.youtube, name: 'YouTube' },
+      { icon: FaSpotify, url: biography.socials.spotify, name: 'Spotify' },
+      { icon: FaApple, url: biography.socials.appleMusic, name: 'Apple Music' }
+    ].map((item, index) => ({
+      ...item,
+      // Variants for the subtle floating effect applied directly to the button
+      buttonVariants: {
+        animate: {
+          y: [0, Math.random() * 5 - 2.5, 0], // Smaller vertical float
+          x: [0, Math.random() * 5 - 2.5, 0], // Smaller horizontal float
+          transition: {
+            duration: 3 + Math.random() * 1, // Slightly varied duration
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: index * 0.1 // Staggered delay for each icon's animation
+          },
+        },
+      },
+    }));
+  }, []);
+
+
   const darkModeTransition = {
     initial: { opacity: 0 },
     animate: {
@@ -117,11 +113,6 @@ const BookingsPage = () => {
       }
     }
   };
-
-  // Optional: If your theme context has a loading state, you can render nothing until it's loaded
-  // if (!isThemeLoaded) {
-  //   return null; // Or a loading spinner
-  // }
 
   return (
     <>
@@ -195,7 +186,6 @@ const BookingsPage = () => {
             ))}
 
             <div className="grid md:grid-cols-2 gap-8 relative">
-              {/* Info column */}
               <motion.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -206,55 +196,100 @@ const BookingsPage = () => {
                   Booking Information
                 </h2>
                 <div className="space-y-6">
-                  <motion.div
-                    whileHover={{ x: 10 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                      Available For
-                    </h3>
-                    <ul className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} space-y-2`}>
-                      {['Club Events', 'Music Festivals', 'Private Events', 'Corporate Functions'].map((item, index) => (
-                        <motion.li
-                          key={item}
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: 0.5 + index * 0.1 }}
-                          whileHover={{ x: 5 }}
-                          className="flex items-center"
-                        >
-                          <Music2 size={16} className="mr-2" />
-                        {item}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.div>
+                  {/* FIX: Wrapped children in a fragment to resolve adjacent JSX error */}
+                  <>
+                    <motion.div
+                      whileHover={{ x: 10 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                        Available For
+                      </h3>
+                      <ul className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} space-y-2`}>
+                        {['Club Events', 'Music Festivals', 'Private Events', 'Corporate Functions'].map((item, index) => (
+                          <motion.li
+                            key={item}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.5 + index * 0.1 }}
+                            whileHover={{ x: 5 }}
+                            className="flex items-center"
+                          >
+                            <Music2 size={16} className={`mr-2 ${isDarkMode ? 'text-purple-400' : 'text-orange-500'}`} />
+                            {item}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
 
-                  {/* AUDIO VISUALIZER HERE */}
-                  <AudioVisualizer
-                    height={40}
-                    barCount={8}
-                    color={isDarkMode ? 'rgb(139, 92, 246)' : 'rgb(109, 40, 217)'}
-                  />
-
-                  {/* IMAGECIRCLE HERE */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-8 flex justify-center"
-                  >
-                    <ImageCircle
-                      images={imagesForCircle}
-                      isDarkRealm={isDarkMode}
-                      currentImageIndex={currentImageIndex}
+                    <AudioVisualizer
+                      height={40}
+                      barCount={8}
+                      color={isDarkMode ? 'rgb(139, 92, 246)' : 'rgb(109, 40, 217)'}
                     />
-                  </motion.div>
 
+                    {/* Added horizontal line and heading for social media section */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6, duration: 0.8 }}
+                      className={`w-full h-px ${isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} my-8`}
+                    />
+                    <motion.h3
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7, duration: 0.8 }}
+                      className={`text-lg font-semibold mb-4 text-center ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}
+                    >
+                      Connect on Social Media
+                    </motion.h3>
+
+                    {/* Aligned social media links as buttons */}
+                    <motion.div
+                      className="grid grid-cols-2 gap-4 mt-8" // Use grid for 2-column layout
+                      initial="hidden"
+                      animate="visible"
+                      variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
+                    >
+                      {socialIcons.map(({ icon: Icon, url, name, buttonVariants }, index) => (
+                        <motion.a
+                          key={url}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center justify-center p-3 rounded-lg shadow-md transition-colors duration-300
+                            ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}
+                          `}
+                          whileHover={{ scale: 1.05 }} // Scale the whole button
+                          variants={buttonVariants} // Apply subtle floating animation to the button
+                          animate="animate"
+                        >
+                          <motion.span
+                            className="inline-block mr-2 text-2xl" // Adjust icon size and margin
+                            style={{
+                              color: isDarkMode ? '#FFFFFF' : '#333333', // Pure white for dark, dark grey for light
+                            }}
+                            whileHover={{
+                              scale: 1.2, // Scale icon on hover
+                              color: isDarkMode ? '#A78BFA' : '#F97316', // Muted purple for dark hover, vibrant orange for light hover
+                            }}
+                            transition={{
+                              color: { duration: 0.4, ease: "easeOut" },
+                              scale: { type: "spring", stiffness: 400, damping: 30 }
+                            }}
+                          >
+                            <Icon />
+                          </motion.span>
+                          <span className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                            {name}
+                          </span>
+                        </motion.a>
+                      ))}
+                    </motion.div>
+                  </>
                 </div>
               </motion.div>
 
-              {/* Form column */}
               <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-6"

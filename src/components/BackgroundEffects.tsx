@@ -361,18 +361,18 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
 
   return (
     <>
-      {/* Main Background Gradient */}
+      {}
       <motion.div
         className="fixed inset-0"
         style={{ zIndex: -21 }}
         animate={{
           background: isDarkRealm ? backgroundGradients.dark : backgroundGradients.light,
         }}
-        // Changed duration from 3.5 to 1.0 for a faster transition
+
         transition={{ duration: 1.0, ease: 'easeInOut' }}
       />
 
-      {/* Atmospheric Haze */}
+      {}
       <motion.div
         className="fixed inset-0"
         style={{
@@ -642,7 +642,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {/* Ocean Ripples */}
+      {}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -664,7 +664,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {/* Water Waves 1 */}
+      {}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -764,7 +764,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {/* Beach Wave Line 1 */}
+      {}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -790,7 +790,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {/* Beach Wave Line 2 */}
+      {}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -892,7 +892,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         ))}
       </div>
 
-      {/* Beach Sparkles */}
+      {}
       <div className="fixed bottom-0 left-0 right-0" style={{ height: 'clamp(20vh, 30vh, 35vh)', zIndex: -5 }}>
         {[...Array(50)].map((_, i) => (
           <motion.div

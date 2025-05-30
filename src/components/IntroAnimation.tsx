@@ -23,16 +23,13 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
   const shockwaveRef = useRef(0);
   const lastFrameTime = useRef(0);
 
-  // Pre-calculate colors for better performance
   const particleColors = ['#ff6b35', '#f7931e', '#ffd23f', '#ee4035', '#7bc043'];
 
-  // Optimized particle creation
   const createParticles = useCallback(() => {
     const newParticles: Particle[] = [];
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
-    // Reduced particle count for optimal performance
     for (let i = 0; i < 80; i++) {
       const angle = (Math.PI * 2 * i) / 80;
       const velocity = 1.5 + Math.random() * 5;
@@ -50,15 +47,14 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
         maxLife: 180
       });
     }
-    
+
     particlesRef.current = newParticles;
     setParticles(newParticles);
   }, []);
 
-  // Optimized particle animation with delta time
   const animateParticles = useCallback((deltaTime: number) => {
-    const timeScale = deltaTime / 16.67; // Normalize for 60fps
-    
+    const timeScale = deltaTime / 16.67; 
+
     particlesRef.current = particlesRef.current.map(particle => ({
       ...particle,
       x: particle.x + particle.vx * timeScale,
@@ -72,7 +68,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
     setShockwaveRadius(shockwaveRef.current);
   }, []);
 
-  // Optimized canvas rendering
   useEffect(() => {
     if (stage === 'explosion') {
       const canvas = canvasRef.current;
@@ -81,25 +76,21 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      // Set canvas size
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
-      // Optimization: disable image smoothing for better performance
       ctx.imageSmoothingEnabled = false;
 
       const animate = (currentTime: number) => {
         const deltaTime = currentTime - lastFrameTime.current;
         lastFrameTime.current = currentTime;
 
-        // Clear canvas efficiently
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const maxRadius = Math.max(canvas.width, canvas.height) * 0.6;
 
-        // Draw shockwave with improved performance
         if (shockwaveRef.current < maxRadius) {
           ctx.beginPath();
           ctx.arc(centerX, centerY, shockwaveRef.current, 0, Math.PI * 2);
@@ -109,14 +100,13 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           ctx.stroke();
         }
 
-        // Batch particle rendering for better performance
         ctx.save();
         particlesRef.current.forEach(particle => {
           const opacity = particle.life / particle.maxLife;
-          
+
           ctx.globalAlpha = opacity;
           ctx.fillStyle = particle.color;
-          
+
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
           ctx.fill();
@@ -138,7 +128,6 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
     }
   }, [stage, animateParticles]);
 
-  // Main animation sequence
   useEffect(() => {
     const explosionTimer = setTimeout(() => {
       setStage('explosion');
@@ -173,23 +162,23 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
             : stage === 'explosion'
               ? 'radial-gradient(circle at center, #ffffff, #ff6b35, #ee4035, #000000)'
               : 'linear-gradient(45deg, #000000, #1a1a1a)',
-          willChange: 'background' // Optimize for animation
+          willChange: 'background' 
         }}
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1.2, ease: "easeInOut" }}
       >
-        {/* Canvas for particles and effects */}
+        {}
         <canvas
           ref={canvasRef}
           className="absolute inset-0"
           style={{ 
             opacity: stage === 'explosion' ? 1 : 0,
-            willChange: 'opacity' // Optimize for animation
+            willChange: 'opacity' 
           }}
         />
 
-        {/* Central orb with optimized animations */}
+        {}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
             className="relative"
@@ -205,7 +194,7 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
             }}
             style={{ willChange: 'transform' }}
           >
-            {/* Outer glow layer */}
+            {}
             <motion.div
               className="absolute w-40 h-40 rounded-full"
               style={{
@@ -224,7 +213,7 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               }}
             />
 
-            {/* Main orb */}
+            {}
             <motion.div
               className="w-32 h-32 rounded-full relative z-10"
               style={{
@@ -249,7 +238,7 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               }}
             />
 
-            {/* Optimized energy rings */}
+            {}
             {[...Array(2)].map((_, i) => (
               <motion.div
                 key={i}
@@ -278,7 +267,7 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           </motion.div>
         </div>
 
-        {/* Optimized screen flash effect */}
+        {}
         {stage === 'explosion' && (
           <motion.div
             className="absolute inset-0 bg-white"
@@ -293,7 +282,7 @@ const IntroAnimation: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           />
         )}
 
-        {/* Fade overlay */}
+        {}
         {stage === 'fade' && (
           <motion.div
             className="absolute inset-0 bg-black"

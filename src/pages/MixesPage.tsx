@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-// import { biography } from '../data/biography'; // Original import
-import MusicCard from '../components/MusicCard';
 import AudioVisualizer from '../components/AudioVisualizer';
 import VinylRecord from '../components/VinylRecord';
 
-// Mock biography data for demonstration purposes, assuming its structure.
-// In a real application, this would be imported from '../data/biography'.
 const biography = {
   mixes: [
     {
@@ -59,9 +55,6 @@ const biography = {
   }
 };
 
-
-// Filter out the specified mixes from biography.mixes
-// The prompt asked to "comment out", which in code means filtering them from being displayed.
 const filteredMixes = biography.mixes.filter(mix => {
   const title = mix.title.toLowerCase();
   return !(
@@ -71,18 +64,14 @@ const filteredMixes = biography.mixes.filter(mix => {
   );
 });
 
-// Determine the featured mix data from the filtered list, ensuring it's SoundCloud hosted.
 const hasFeaturedMix = filteredMixes && filteredMixes.length > 0 &&
-                       filteredMixes[0].platform === "SoundCloud"; // Ensure it's SoundCloud
+                       filteredMixes[0].platform === "SoundCloud"; 
 const featuredMixData = hasFeaturedMix ? filteredMixes[0] : null;
-
 
 const MixesPage = () => {
   const { isDarkMode } = useTheme();
-  // activeMix state is no longer directly used for 'Recent Mixes' but kept for potential future use or if MusicCard has other interactive elements.
   const [activeMix, setActiveMix] = useState<number | null>(null);
   const [isVinylPlaying, setIsVinylPlaying] = useState(false);
-
 
   return (
     <motion.div
@@ -163,7 +152,7 @@ const MixesPage = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span>Listen on SoundCloud</span>
-                  {/* SoundCloud Logo SVG */}
+                  {}
                   <svg 
                     fill="currentColor" 
                     width="20" 
@@ -224,39 +213,8 @@ const MixesPage = () => {
           </motion.div>
         )}
 
-        {/* The "Recent Mixes" section has been entirely removed as per the request. */}
-        {/*
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <h2 className={`text-2xl font-bold mb-8 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
-            Recent Mixes
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredMixes.map((mix, index) => (
-              <MusicCard
-                key={index}
-                title={mix.title}
-                description={mix.description}
-                imageUrl={mix.imageUrl}
-                isPlaying={activeMix === index}
-                onTogglePlay={() => {
-                  if (activeMix === index) {
-                    setActiveMix(null);
-                  } else {
-                    setActiveMix(index);
-                  }
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
-        */}
+        {}
+        {}
 
         <motion.div
           initial={{ y: 20, opacity: 0 }}
@@ -270,7 +228,7 @@ const MixesPage = () => {
               : 'bg-white/80 border border-gray-200'
           } backdrop-blur-sm shadow-xl`}
           >
-            {/* The iframe for SoundCloud remains, as it's already showing SoundCloud-hosted mixes. */}
+            {}
             <iframe
               width="100%"
               height="450"

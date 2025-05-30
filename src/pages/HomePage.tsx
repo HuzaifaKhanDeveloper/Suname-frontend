@@ -1,62 +1,63 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useReducedMotion } from 'framer-motion';
 import { FaSoundcloud, FaInstagram, FaTwitter, FaTiktok, FaYoutube, FaSpotify, FaApple } from 'react-icons/fa';
 import { biography } from '../data/biography';
-import AudioVisualizer from '../components/AudioVisualizer';
-import ParticleSystem from '../components/ParticleSystem';
 
-interface ParticleSystemProps {
-  isDarkRealm: boolean;
-  customColors: string[];
-}
+const AudioVisualizer = lazy(() => import('../components/AudioVisualizer'));
+const ParticleSystem = lazy(() => import('../components/ParticleSystem'));
 
 interface HomePageProps {
   isDarkRealm: boolean;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
+const lightModeImages = [
+  { src: "/images/artist_main.jpg", alt: "SUNAME Main Artist" },
+  { src: "/images/artist_beachball.jpg", alt: "SUNAME Beachball Headshot" },
+  { src: "/images/artist_orange.jpg", alt: "SUNAME Orange Full Body" },
+];
+
+const darkModeImages = [
+  { src: "/images/darkPhoto1.jpg", alt: "SUNAME Dark Realm 1" },
+  { src: "/images/darkPhoto2.jpg", alt: "SUNAME Dark Realm 2" },
+  { src: "/images/darkPhoto3.jpg", alt: "SUNAME Dark Realm 3" },
+];
+
+const imagesToAdjust = [
+  "/images/artist_orange.jpg",
+  "/images/darkPhoto1.jpg",
+  "/images/darkPhoto3.jpg",
+];
+
+const HomePage: React.FC<HomePageProps> = React.memo(({ isDarkRealm }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [previousDarkRealm, setPreviousDarkRealm] = useState(isDarkRealm);
   const heroRef = useRef<HTMLElement>(null);
 
+  const prefersReducedMotion = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
-
-  const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", prefersReducedMotion ? "0%" : "15%"]);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [3, -3]);
   const rotateY = useTransform(x, [-100, 100], [-3, 3]);
 
-  const lightModeImages = [
-    { src: "/images/artist_main.jpg", alt: "SUNAME Main Artist" },
-    { src: "/images/artist_beachball.jpg", alt: "SUNAME Beachball Headshot" },
-    { src: "/images/artist_orange.jpg", alt: "SUNAME Orange Full Body" },
-  ];
-
-  const darkModeImages = [
-    { src: "/images/darkPhoto1.jpg", alt: "SUNAME Dark Realm 1" },
-    { src: "/images/darkPhoto2.jpg", alt: "SUNAME Dark Realm 2" },
-    { src: "/images/darkPhoto3.jpg", alt: "SUNAME Dark Realm 3" },
-  ];
-
   const heroImages = isDarkRealm ? darkModeImages : lightModeImages;
   const galleryImages = isDarkRealm ? darkModeImages : lightModeImages;
 
   useEffect(() => {
-    heroImages.forEach((image) => {
-      const img = new Image();
-      img.src = image.src;
-    });
+    const imagesToPreload = new Set<string>();
+    heroImages.forEach((image) => imagesToPreload.add(image.src));
+    galleryImages.forEach((image) => imagesToPreload.add(image.src));
 
-    galleryImages.forEach((image) => {
+    imagesToPreload.forEach((src) => {
       const img = new Image();
-      img.src = image.src;
+      img.src = src;
     });
 
     if (previousDarkRealm !== isDarkRealm) {
@@ -66,23 +67,27 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
   }, [isDarkRealm, previousDarkRealm, heroImages, galleryImages]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [heroImages.length]);
+  }, [heroImages.length, prefersReducedMotion]);
 
   const handleMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set(event.clientX - rect.left - rect.width / 2);
     y.set(event.clientY - rect.top - rect.height / 2);
-  }, [x, y]);
+  }, [x, y, prefersReducedMotion]);
 
   const handleMouseLeave = useCallback(() => {
+    if (prefersReducedMotion) return;
     x.set(0);
     y.set(0);
-  }, [x, y]);
+  }, [x, y, prefersReducedMotion]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -94,7 +99,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.5 } : {
         duration: 1.2,
         ease: [0.2, 0.8, 0.2, 1],
         staggerChildren: 0.1,
@@ -108,20 +113,8 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.5 } : {
         duration: 1.0,
-        ease: [0.2, 0.8, 0.2, 1],
-      },
-    },
-  };
-
-  const itemGentleRise = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.9,
         ease: [0.2, 0.8, 0.2, 1],
       },
     },
@@ -133,7 +126,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.4 } : {
         duration: 0.8,
         ease: [0.2, 0.8, 0.2, 1],
       },
@@ -141,7 +134,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
   };
 
   const sunameActiveTextAnimation = {
-    animate: isDarkRealm
+    animate: prefersReducedMotion ? {} : (isDarkRealm
       ? {
           color: ['#E0BBE4', '#FFFFFF', '#E0BBE4'],
           textShadow: [
@@ -167,11 +160,11 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             ease: "easeInOut",
             repeatType: "mirror" as const
           }
-        }
+        })
   };
 
   const taglineActiveTextAnimation = {
-    animate: isDarkRealm
+    animate: prefersReducedMotion ? {} : (isDarkRealm
       ? {
           color: ['#FFFFFF', '#B39DDB', '#FFFFFF'],
           textShadow: [
@@ -189,7 +182,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             '0 0 5px rgba(255,165,0,0.4)'
           ],
           transition: { repeat: Infinity, duration: 4, ease: "easeInOut", repeatType: "mirror" as const, delay: 0.1 }
-        }
+        })
   };
 
   const taglineWordReveal = {
@@ -197,7 +190,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.4 } : {
         duration: 0.7,
         ease: [0.2, 0.8, 0.2, 1],
       },
@@ -205,7 +198,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
   };
 
   const quoteActiveTextAnimation = {
-    animate: isDarkRealm
+    animate: prefersReducedMotion ? {} : (isDarkRealm
       ? {
           color: ['#FFFFFF', 'rgba(179,157,219,0.9)', '#FFFFFF'],
           textShadow: ['0 0 5px rgba(139,92,246,0.3)', '0 0 10px rgba(139,92,246,0.6)', '0 0 5px rgba(139,92,246,0.3)'],
@@ -227,7 +220,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             ease: "easeInOut",
             repeatType: "mirror" as const
           }
-        }
+        })
   };
 
   const quoteLineReveal = {
@@ -235,7 +228,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.5 } : {
         duration: 1.0,
         ease: [0.2, 0.8, 0.2, 1]
       },
@@ -257,14 +250,14 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
     initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.3 } : {
         duration: 0.4,
         ease: "easeInOut"
       }
     },
     exit: {
       opacity: 0,
-      transition: {
+      transition: prefersReducedMotion ? { duration: 0.2 } : {
         duration: 0.3,
         ease: "easeInOut"
       }
@@ -272,7 +265,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
   };
 
   const footerTextAnimation = {
-    animate: isDarkRealm
+    animate: prefersReducedMotion ? {} : (isDarkRealm
       ? {
           color: ['#FFFFFF', '#8B5CF6', '#FFFFFF'],
           textShadow: ['0 0 3px rgba(139,92,246,0.4)', '0 0 6px rgba(139,92,246,0.7)', '0 0 3px rgba(139,92,246,0.4)'],
@@ -282,7 +275,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
           color: ['#1A202C', '#FF7043', '#1A202C'],
           textShadow: ['0 0 2px rgba(255,112,67,0.3)', '0 0 4px rgba(255,112,67,0.6)', '0 0 2px rgba(255,112,67,0.3)'],
           transition: { repeat: Infinity, duration: 4, ease: "easeInOut", repeatType: "mirror" as const }
-        }
+        })
   };
 
   return (
@@ -294,10 +287,12 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
       animate="animate"
       exit="exit"
     >
-      <ParticleSystem
-        isDarkRealm={isDarkRealm}
-        customColors={isDarkRealm ? ['#303F9F', '#42A5F5', '#8B5CF6'] : ['#FFD180', '#FFA07A', '#FF7043']}
-      />
+      <Suspense fallback={null}>
+        <ParticleSystem
+          isDarkRealm={isDarkRealm}
+          customColors={isDarkRealm ? ['#303F9F', '#42A5F5', '#8B5CF6'] : ['#FFD180', '#FFA07A', '#FF7043']}
+        />
+      </Suspense>
 
       <motion.svg
         className="absolute bottom-0 left-0 w-full h-80 md:h-96 z-0"
@@ -305,12 +300,12 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
         preserveAspectRatio="none"
         initial={{ opacity: 0, y: 200 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 2.5, delay: 1 }}
+        transition={prefersReducedMotion ? { duration: 1.0, delay: 0.5 } : { duration: 2.5, delay: 1 }}
         style={{
           fill: isDarkRealm ? 'rgba(48,63,159,0.4)' : 'rgba(255,165,0,0.2)'
         }}
       >
-        {isMounted && (
+        {isMounted && !prefersReducedMotion && (
           <motion.path
             d="M0 60 C 100 10 200 100 300 40 L 300 100 L 0 100 Z"
             animate={{
@@ -342,9 +337,9 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             className="relative w-80 h-80 mx-auto mb-10 cursor-grab active:cursor-grabbing rounded-full overflow-hidden"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={{ rotateX, rotateY, scale: 1 }}
-            animate={{ rotate: [0, 10, -10, 5, -5, 0] }}
-            transition={{
+            style={prefersReducedMotion ? {} : { rotateX, rotateY, scale: 1 }}
+            animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 5, -5, 0] }}
+            transition={prefersReducedMotion ? {} : {
               duration: 8,
               repeat: Infinity,
               ease: "linear",
@@ -352,18 +347,18 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
           >
             <motion.div
               className="absolute inset-0 rounded-full"
-              animate={{
+              animate={prefersReducedMotion ? {} : {
                 background: isDarkRealm
                   ? ['linear-gradient(0deg, rgba(48,63,159,0.6), transparent)',
-                      'linear-gradient(90deg, rgba(48,63,159,0.6), transparent)',
-                      'linear-gradient(180deg, rgba(48,63,159,0.6), transparent)',
-                      'linear-gradient(270deg, rgba(48,63,159,0.6), transparent)']
-                    : ['linear-gradient(0deg, rgba(255,165,0,0.6), transparent)',
-                      'linear-gradient(90deg, rgba(255,165,0,0.6), transparent)',
-                      'linear-gradient(180deg, rgba(255,165,0,0.6), transparent)',
-                      'linear-gradient(270deg, rgba(255,165,0,0.6), transparent)']
+                    'linear-gradient(90deg, rgba(48,63,159,0.6), transparent)',
+                    'linear-gradient(180deg, rgba(48,63,159,0.6), transparent)',
+                    'linear-gradient(270deg, rgba(48,63,159,0.6), transparent)']
+                  : ['linear-gradient(0deg, rgba(255,165,0,0.6), transparent)',
+                    'linear-gradient(90deg, rgba(255,165,0,0.6), transparent)',
+                    'linear-gradient(180deg, rgba(255,165,0,0.6), transparent)',
+                    'linear-gradient(270deg, rgba(255,165,0,0.6), transparent)']
               }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              transition={prefersReducedMotion ? {} : { duration: 6, repeat: Infinity, ease: "linear" }}
             />
             <AnimatePresence mode="sync" initial={false}>
               <motion.img
@@ -383,13 +378,15 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                   opacity: 0,
                   scale: 0.95
                 }}
-                transition={{
+                transition={prefersReducedMotion ? { duration: 0.3 } : {
                   duration: 0.6,
                   ease: "easeInOut"
                 }}
                 style={{
-                  borderColor: isDarkRealm ? 'rgba(48,63,159,0.8)' : 'rgba(255,165,0,0.8)'
+                  borderColor: isDarkRealm ? 'rgba(48,63,159,0.8)' : 'rgba(255,165,0,0.8)',
+                  objectPosition: imagesToAdjust.includes(heroImages?.[currentImageIndex]?.src || '') ? '50% 30%' : 'center'
                 }}
+                loading="eager"
               />
             </AnimatePresence>
             <motion.div
@@ -397,7 +394,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
               animate={{
                 backgroundColor: isDarkRealm ? 'rgba(139,92,246,0.5)' : 'rgba(255,127,80,0.5)'
               }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={prefersReducedMotion ? { duration: 0.4 } : { duration: 0.8, ease: "easeInOut" }}
             />
           </motion.div>
 
@@ -409,7 +406,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
               className="relative z-0 inline-block overflow-hidden"
               variants={{
                 visible: {
-                  transition: {
+                  transition: prefersReducedMotion ? { staggerChildren: 0.04, delayChildren: 0.4 } : {
                     staggerChildren: 0.08,
                     delayChildren: 0.8
                   }
@@ -421,7 +418,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                   key={index}
                   className="inline-block"
                   variants={sunameCharReveal}
-                  animate={isMounted ? sunameActiveTextAnimation.animate : undefined}
+                  animate={isMounted && !prefersReducedMotion ? sunameActiveTextAnimation.animate : undefined}
                 >
                   {char === " " ? "\u00A0" : char}
                 </motion.span>
@@ -433,12 +430,12 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             className={`text-xl md:text-2xl mb-8 max-w-2xl mx-auto text-white`}
             style={{ y: heroTextY }}
             variants={{
-                visible: {
-                    transition: {
-                        staggerChildren: 0.05,
-                        delayChildren: 1.2
-                    }
+              visible: {
+                transition: prefersReducedMotion ? { staggerChildren: 0.02, delayChildren: 0.6 } : {
+                  staggerChildren: 0.05,
+                  delayChildren: 1.2
                 }
+              }
             }}
           >
             {splitTagline.map((word, index) => (
@@ -446,7 +443,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                 key={index}
                 className="inline-block mr-2"
                 variants={taglineWordReveal}
-                animate={isMounted ? taglineActiveTextAnimation.animate : undefined}
+                animate={isMounted && !prefersReducedMotion ? taglineActiveTextAnimation.animate : undefined}
               >
                 {word}
               </motion.span>
@@ -460,7 +457,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
               visible: {
                 opacity: 1,
                 y: 0,
-                transition: {
+                transition: prefersReducedMotion ? { delay: 0.8, staggerChildren: 0.05 } : {
                   delay: 1.5,
                   staggerChildren: 0.1
                 }
@@ -484,7 +481,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                 className="text-3xl md:text-4xl"
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 1.5 + index * 0.1 }}
+                transition={prefersReducedMotion ? { duration: 0.4, delay: 0.8 + index * 0.05 } : { duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 1.5 + index * 0.1 }}
               >
                 <motion.span
                   className="inline-block"
@@ -494,14 +491,14 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                       ? 'drop-shadow(0px 0px 5px rgba(139,92,246,0.6)) drop-shadow(0px 0px 10px rgba(139,92,246,0.4))'
                       : 'drop-shadow(0px 0px 5px rgba(255,165,0,0.6)) drop-shadow(0px 0px 10px rgba(255,165,0,0.4))',
                   }}
-                  whileHover={{
+                  whileHover={prefersReducedMotion ? {} : {
                     scale: 1.2,
                     color: isDarkRealm ? '#8B5CF6' : '#FF7043',
                     filter: isDarkRealm
                       ? 'drop-shadow(0px 0px 8px rgba(139,92,246,0.9)) drop-shadow(0px 0px 15px rgba(139,92,246,0.7)) drop-shadow(0px 0px 25px rgba(139,92,246,0.5))'
                       : 'drop-shadow(0px 0px 8px rgba(255,165,0,0.9)) drop-shadow(0px 0px 15px rgba(255,165,0,0.7)) drop-shadow(0px 0px 25px rgba(255,165,0,0.5))',
                   }}
-                  transition={{
+                  transition={prefersReducedMotion ? {} : {
                     filter: { duration: 0.4, ease: "easeOut" },
                     color: { duration: 0.4, ease: "easeOut" },
                     scale: { type: "spring", stiffness: 400, damping: 30 }
@@ -532,7 +529,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+            variants={{ visible: { transition: prefersReducedMotion ? { staggerChildren: 0.1 } : { staggerChildren: 0.2 } } }}
           >
             {galleryImages.map((image, index) => (
               <motion.div
@@ -544,10 +541,11 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                     opacity: 1,
                     scale: 1,
                     y: 0,
-                    transition: { duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: index * 0.05 }
+                    transition: prefersReducedMotion ? { duration: 0.4, delay: index * 0.02 } : { duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: index * 0.05 }
                   },
                 }}
-                whileHover={{ scale: 1.05, z: 10,
+                whileHover={prefersReducedMotion ? {} : {
+                  scale: 1.05, z: 10,
                   boxShadow: isDarkRealm ? '0px 0px 20px rgba(139,92,246,0.5)' : '0px 0px 20px rgba(255,127,80,0.6)'
                 }}
               >
@@ -555,10 +553,14 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
                   src={image.src}
                   alt={image.alt}
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  style={{
+                    objectPosition: imagesToAdjust.includes(image.src) ? '50% 30%' : 'center'
+                  }}
                 />
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity flex items-end p-4"
-                  whileHover={{ opacity: 1 }}
+                  whileHover={prefersReducedMotion ? {} : { opacity: 1 }}
                 >
                   <p className="text-white text-lg font-semibold" style={getDynamicWhiteTextStyle(isDarkRealm)}>
                     {image.alt}
@@ -575,12 +577,12 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
           <motion.blockquote
             className={`text-3xl md:text-4xl font-bold italic mb-8 relative`}
             variants={{
-                visible: {
-                    transition: {
-                        staggerChildren: 0.1,
-                        delayChildren: 0.2
-                    }
+              visible: {
+                transition: prefersReducedMotion ? { staggerChildren: 0.05, delayChildren: 0.1 } : {
+                  staggerChildren: 0.1,
+                  delayChildren: 0.2
                 }
+              }
             }}
             initial="hidden"
             whileInView="visible"
@@ -590,26 +592,26 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
               className={`absolute -top-6 left-1/2 -translate-x-1/2 text-7xl opacity-20 ${isDarkRealm ? 'text-primary-500' : 'text-orange-500'}`}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 0.2 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+              transition={prefersReducedMotion ? { duration: 0.4, delay: 0.05 } : { duration: 0.8, ease: "easeOut", delay: 0.1 }}
             >
               &ldquo;
             </motion.span>
             {quoteTagline.split(" ").map((word, index) => (
-                <motion.span
-                  key={index}
-                  className="inline-block mx-0.5"
-                  variants={quoteLineReveal}
-                  animate={isMounted ? quoteActiveTextAnimation.animate : undefined}
-                  style={{ color: isDarkRealm ? '#FFFFFF' : '#1A202C' }}
-                >
-                  {word}
-                </motion.span>
+              <motion.span
+                key={index}
+                className="inline-block mx-0.5"
+                variants={quoteLineReveal}
+                animate={isMounted && !prefersReducedMotion ? quoteActiveTextAnimation.animate : undefined}
+                style={{ color: isDarkRealm ? '#FFFFFF' : '#1A202C' }}
+              >
+                {word}
+              </motion.span>
             ))}
             <motion.span
               className={`absolute -bottom-6 left-1/2 -translate-x-1/2 text-7xl opacity-20 ${isDarkRealm ? 'text-primary-500' : 'text-orange-500'}`}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 0.2 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: quoteTagline.split(" ").length * 0.05 + 0.3 }}
+              transition={prefersReducedMotion ? { duration: 0.4, delay: quoteTagline.split(" ").length * 0.02 + 0.15 } : { duration: 0.8, ease: "easeOut", delay: quoteTagline.split(" ").length * 0.05 + 0.3 }}
             >
               &rdquo;
             </motion.span>
@@ -618,17 +620,19 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.5 } }
+              visible: { opacity: 1, y: 0, transition: prefersReducedMotion ? { duration: 0.5, delay: 0.2 } : { duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.5 } }
             }}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
           >
-            <AudioVisualizer
-              height={80}
-              barCount={48}
-              color={isDarkRealm ? 'rgb(139, 92, 246)' : 'rgb(255,127,80)'}
-            />
+            <Suspense fallback={null}>
+              <AudioVisualizer
+                height={80}
+                barCount={48}
+                color={isDarkRealm ? 'rgb(139, 92, 246)' : 'rgb(255,127,80)'}
+              />
+            </Suspense>
           </motion.div>
         </div>
       </section>
@@ -640,7 +644,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.8 }}
-          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
+          transition={prefersReducedMotion ? { duration: 0.4, delay: 0.1 } : { duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
         >
           Artwork & Website by{' '}
           <motion.a
@@ -648,7 +652,7 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary-500 hover:text-primary-400 font-semibold"
-            animate={isMounted ? footerTextAnimation.animate : undefined}
+            animate={isMounted && !prefersReducedMotion ? footerTextAnimation.animate : undefined}
           >
             JimmyDesigns
           </motion.a>
@@ -656,6 +660,6 @@ const HomePage: React.FC<HomePageProps> = ({ isDarkRealm }) => {
       </footer>
     </motion.div>
   );
-};
+});
 
 export default HomePage;

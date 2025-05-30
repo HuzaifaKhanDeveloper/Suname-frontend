@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Menu, X } from 'lucide-react'; // Music2 is removed as it's no longer used
+import { Menu, X } from 'lucide-react'; 
 
 interface HeaderProps {
   isDarkRealm: boolean;
@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
     >
       <div className="container mx-auto px-4 h-20">
         <div className="flex items-center justify-between h-full">
-          {/* Logo */}
+          {}
           <Link to="/" className="flex items-center group">
             <motion.div
               animate={{ rotate: 360 }}
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {}
           <nav className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
                     className="flex items-center space-x-2"
                     whileHover={{ x: 5 }}
                   >
-                    {/* Replaced Music2 with SUNAME logo for desktop */}
+                    {}
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -124,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
                       {item.title}
                     </motion.span>
                   </motion.div>
-                  {/* Dark hover underline for desktop nav items */}
+                  {}
                   <motion.div
                     className={`absolute -bottom-1 left-0 h-0.5 transform origin-left bg-gray-800`}
                     initial={{ scaleX: 0 }}
@@ -142,7 +142,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
             })}
           </nav>
 
-          {/* Mobile Menu Button */}
+          {}
           <motion.button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden"
@@ -162,7 +162,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkRealm }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {}
       <motion.nav
         className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}
         initial={{ opacity: 0, y: -20 }}
