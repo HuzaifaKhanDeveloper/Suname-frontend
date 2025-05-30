@@ -266,8 +266,8 @@ const MusicPage = () => {
                 <motion.button
                   onClick={handleFollowToggle}
                   className={`${isFollowing ? 'bg-purple-600 text-white shadow-lg' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white hover:shadow-md' : 'border-gray-400 text-gray-600 hover:text-gray-900 hover:shadow-md'} border-2 px-6 py-3 rounded-full font-semibold`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.07, boxShadow: isFollowing ? '0 8px 15px rgba(147, 51, 234, 0.4)' : (isDarkMode ? '0 4px 8px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)') }}
+                  whileTap={{ scale: 0.93 }}
                   animate={{
                     backgroundColor: isFollowing ? 'rgb(147, 51, 234)' : (isDarkMode ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'),
                     color: isFollowing ? 'rgb(255, 255, 255)' : (isDarkMode ? 'rgb(209, 213, 219)' : 'rgb(75, 85, 99)')
@@ -280,9 +280,10 @@ const MusicPage = () => {
                 {/* Listen in SoundCloud button */}
                 <motion.button
                   onClick={handleListenInSoundCloud}
-                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 shadow-md hover:shadow-lg transition-shadow`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 shadow-md`}
+                  whileHover={{ scale: 1.07, boxShadow: isDarkMode ? '0 4px 8px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)' }}
+                  whileTap={{ scale: 0.93 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <ExternalLink className="w-5 h-5" />
                   Listen in SoundCloud
@@ -293,8 +294,9 @@ const MusicPage = () => {
                   <motion.button
                     onClick={() => setShowMoreOptions(prev => !prev)}
                     className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors rounded-full flex items-center justify-center`}
-                    whileHover={{ scale: 1.1, backgroundColor: isDarkMode ? 'rgba(55, 65, 81, 0.5)' : 'rgba(243, 244, 246, 0.5)' }}
+                    whileHover={{ scale: 1.15, rotate: 90, backgroundColor: isDarkMode ? 'rgba(55, 65, 81, 0.5)' : 'rgba(243, 244, 246, 0.5)' }}
                     whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <MoreHorizontal className="w-6 h-6" />
                   </motion.button>
@@ -302,17 +304,18 @@ const MusicPage = () => {
                   <AnimatePresence>
                     {showMoreOptions && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                         className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-10 border origin-top-right overflow-hidden`}
                       >
                         <motion.button
                           onClick={handleCopyLink}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 5 }}
+                          whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.98 }}
+                          transition={{ duration: 0.15 }}
                         >
                           <Link className="w-4 h-4" />
                           Copy Link
@@ -320,8 +323,9 @@ const MusicPage = () => {
                         <motion.button
                           onClick={handleShare}
                           className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
-                          whileHover={{ x: 5 }}
+                          whileHover={{ x: 8, backgroundColor: isDarkMode ? '#6B46C1' : '#EDE9FE', color: isDarkMode ? '#FFFFFF' : '#6B46C1' }}
                           whileTap={{ scale: 0.98 }}
+                          transition={{ duration: 0.15 }}
                         >
                           <Share2 className="w-4 h-4" />
                           Share
@@ -375,8 +379,8 @@ const MusicPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index }}
                 onClick={() => handleTrackClick(track.id)}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02, boxShadow: isDarkMode ? '0 4px 8px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)' }}
+                whileTap={{ scale: 0.98 }}
               >
                 {/* Track Number */}
                 <div className="w-8 flex justify-center">
