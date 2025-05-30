@@ -292,8 +292,8 @@ const MusicPage = () => {
                 <div className="relative" ref={moreOptionsRef}>
                   <motion.button
                     onClick={() => setShowMoreOptions(prev => !prev)}
-                    className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors`}
-                    whileHover={{ scale: 1.1 }}
+                    className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'} p-3 transition-colors rounded-full flex items-center justify-center`}
+                    whileHover={{ scale: 1.1, backgroundColor: isDarkMode ? 'rgba(55, 65, 81, 0.5)' : 'rgba(243, 244, 246, 0.5)' }}
                     whileTap={{ scale: 0.9 }}
                   >
                     <MoreHorizontal className="w-6 h-6" />
@@ -306,24 +306,22 @@ const MusicPage = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-2 z-10 border origin-top-right`}
+                        className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} absolute right-0 mt-2 w-48 rounded-xl shadow-2xl py-2 z-10 border origin-top-right overflow-hidden`}
                       >
                         <motion.button
                           onClick={handleCopyLink}
-                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} rounded-md`}
-                          whileHover={{ backgroundColor: isDarkMode ? '#374151' : '#F3F4F6', scale: 1.02 }}
+                          className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
+                          whileHover={{ x: 5 }}
                           whileTap={{ scale: 0.98 }}
-                          transition={{ duration: 0.1 }}
                         >
                           <Link className="w-4 h-4" />
                           Copy Link
                         </motion.button>
                         <motion.button
                           onClick={handleShare}
-                          className={`flex items-center gap-2 w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} rounded-md`}
-                          whileHover={{ backgroundColor: isDarkMode ? '#374151' : '#F3F4F6', scale: 1.02 }}
+                          className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium ${isDarkMode ? 'text-gray-200 hover:bg-purple-700 hover:text-white' : 'text-gray-800 hover:bg-purple-100 hover:text-purple-800'} transition-colors duration-200`}
+                          whileHover={{ x: 5 }}
                           whileTap={{ scale: 0.98 }}
-                          transition={{ duration: 0.1 }}
                         >
                           <Share2 className="w-4 h-4" />
                           Share
