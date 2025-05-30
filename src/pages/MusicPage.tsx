@@ -225,27 +225,29 @@ const MusicPage = () => {
       />
 
       <motion.div
-        className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-6 mb-8`}
+        className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl pt-8 pb-16 px-4 sm:px-6 mb-8`} {/* Adjusted padding for mobile */}
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         whileHover={{
           scale: 1.005,
-          boxShadow: isDarkMode ? '0 15px 30px rgba(0,0,0,0.6)' : '0 15px 30px rgba(0,0,0,0.2)'
+          rotateX: 1,
+          rotateY: 1,
+          boxShadow: isDarkMode ? '0 18px 36px rgba(0,0,0,0.7)' : '0 18px 36px rgba(0,0,0,0.3)'
         }}
-        whileTap={{ scale: 0.995 }}
+        whileTap={{ scale: 0.995, rotateX: 0, rotateY: 0 }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <motion.div
-              className="relative group"
-              whileHover={{ scale: 1.05, rotateZ: 2 }}
+              className="relative group w-full flex justify-center lg:justify-start" // Added flex and justify-center for mobile centering
+              whileHover={{ scale: 1.05, rotateZ: 2, filter: 'brightness(1.1)' }}
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
                 src="https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=400"
                 alt="SUNAME"
-                className="w-64 h-64 rounded-2xl shadow-2xl object-cover"
+                className="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl shadow-2xl object-cover" // Responsive image size
               />
             </motion.div>
 
@@ -264,6 +266,7 @@ const MusicPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, ease: "easeOut" }}
+                whileHover={{ scale: 1.02, color: isDarkMode ? '#A78BFA' : '#F97316' }}
               >
                 SUNAME
               </motion.h1>
@@ -274,18 +277,27 @@ const MusicPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, ease: "easeOut" }}
               >
-                <span className="flex items-center gap-1">
+                <motion.span
+                  className="flex items-center gap-1"
+                  whileHover={{ y: -3, scale: 1.05, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                >
                   <Headphones className="w-4 h-4" />
                   4.2M monthly listeners
-                </span>
-                <span className="flex items-center gap-1">
+                </motion.span>
+                <motion.span
+                  className="flex items-center gap-1"
+                  whileHover={{ y: -3, scale: 1.05, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                >
                   <Eye className="w-4 h-4" />
                   1.5M views
-                </span>
-                <span className="flex items-center gap-1">
+                </motion.span>
+                <motion.span
+                  className="flex items-center gap-1"
+                  whileHover={{ y: -3, scale: 1.05, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                >
                   <Music className="w-4 h-4" />
                   Electronic • Synthwave
-                </span>
+                </motion.span>
               </motion.div>
 
               <motion.div
@@ -297,7 +309,7 @@ const MusicPage = () => {
                 <motion.button
                   onClick={handleFollowToggle}
                   className={`${isFollowing ? 'bg-purple-600 text-white shadow-lg' : isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white hover:shadow-md' : 'border-gray-400 text-gray-600 hover:text-gray-900 hover:shadow-md'} border-2 px-6 py-3 rounded-full font-semibold`}
-                  whileHover={{ scale: 1.1, y: -5, boxShadow: isFollowing ? '0 10px 25px rgba(147, 51, 234, 0.6)' : (isDarkMode ? '0 8px 16px rgba(0,0,0,0.5)' : '0 8px 16px rgba(0,0,0,0.3)') }}
+                  whileHover={{ scale: 1.1, y: -5, boxShadow: isFollowing ? '0 10px 25px rgba(147, 51, 234, 0.6)' : (isDarkMode ? '0 8px 20px rgba(0,0,0,0.6)' : '0 8px 20px rgba(0,0,0,0.4)') }}
                   whileTap={{ scale: 0.9, y: 0 }}
                   animate={{
                     backgroundColor: isFollowing ? 'rgb(147, 51, 234)' : (isDarkMode ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'),
@@ -311,7 +323,7 @@ const MusicPage = () => {
                 <motion.button
                   onClick={handleListenInSoundCloud}
                   className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold flex items-center gap-2 shadow-md`}
-                  whileHover={{ scale: 1.1, y: -5, boxShadow: isDarkMode ? '0 8px 16px rgba(0,0,0,0.4)' : '0 8px 16px rgba(0,0,0,0.2)' }}
+                  whileHover={{ scale: 1.1, y: -5, boxShadow: isDarkMode ? '0 8px 20px rgba(0,0,0,0.6)' : '0 8px 20px rgba(0,0,0,0.4)' }}
                   whileTap={{ scale: 0.9, y: 0 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
@@ -418,9 +430,14 @@ const MusicPage = () => {
         </div>
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 py-8" // Adjusted padding for mobile
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, ease: "easeOut" }} // Added entrance animation for this section
+      >
         <motion.div
-          className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl p-8`}
+          className={`${isDarkMode ? 'bg-gray-900/60 border border-gray-800' : 'bg-white/80 border border-gray-200'} backdrop-blur-sm rounded-3xl shadow-2xl p-4 sm:p-8`} {/* Adjusted padding for mobile */}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, ease: "easeOut" }}
@@ -456,43 +473,60 @@ const MusicPage = () => {
                 whileHover={{
                   scale: 1.03,
                   y: -2,
+                  rotateZ: 0.5,
                   boxShadow: isDarkMode ? '0 6px 12px rgba(0,0,0,0.4)' : '0 6px 12px rgba(0,0,0,0.2)',
                   backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.7)' : 'rgba(243, 244, 246, 0.7)'
                 }}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.97, rotateZ: 0 }}
               >
                 <div className="w-8 flex-shrink-0 flex justify-center">
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <motion.span
+                    className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}
+                    whileHover={{ scale: 1.2, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
                     {index + 1}
-                  </span>
+                  </motion.span>
                 </div>
 
                 <motion.img
                   src={track.imageUrl}
                   alt={track.title}
                   className="w-12 h-12 rounded object-cover flex-shrink-0"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileHover={{ scale: 1.1, rotate: 5, filter: 'brightness(1.2)' }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 />
 
                 <div className="flex-1 min-w-0 text-center sm:text-left">
-                  <h3 className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}>
+                  <motion.h3
+                    className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}
+                    whileHover={{ scale: 1.02, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                  >
                     {track.title}
-                  </h3>
-                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} truncate`}>
+                  </motion.h3>
+                  <motion.p
+                    className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} truncate`}
+                    whileHover={{ scale: 1.02, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                  >
                     {track.artist}
-                  </p>
+                  </motion.p>
                 </div>
 
-                <div className={`hidden md:flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20 flex-shrink-0`}>
+                <motion.div
+                  className={`hidden md:flex items-center gap-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20 flex-shrink-0`}
+                  whileHover={{ scale: 1.05, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                >
                   <Eye className="w-4 h-4" />
                   {track.plays}
-                </div>
+                </motion.div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12 text-right sm:text-left`}>
+                  <motion.span
+                    className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-12 text-right sm:text-left`}
+                    whileHover={{ scale: 1.05, color: isDarkMode ? '#A78BFA' : '#F97316' }}
+                  >
                     {track.duration}
-                  </span>
+                  </motion.span>
 
                   <div className="relative" ref={el => trackOptionsRefs.current[track.id] = el}>
                     <motion.button
@@ -538,7 +572,7 @@ const MusicPage = () => {
           </div>
         </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
