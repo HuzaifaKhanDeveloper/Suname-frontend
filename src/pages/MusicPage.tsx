@@ -153,7 +153,7 @@ const MusicPage = () => {
       tempInput.value = linkToCopy;
       document.body.appendChild(tempInput);
       tempInput.select();
-      document.execCommand('copy');
+      document.execCommand('copy'); // Use document.execCommand for clipboard operations in iframes
       document.body.removeChild(tempInput);
       setShowCopyMessage(true);
       setTimeout(() => setShowCopyMessage(false), 2000);
@@ -165,23 +165,12 @@ const MusicPage = () => {
   };
 
   const handleShare = async (linkToShare, title, text) => {
-    const shareData = {
-        title: title || 'Check out this music!',
-        text: text || 'Listen to amazing tracks by SUNAME.',
-        url: linkToShare,
-    };
-    try {
-        if (navigator.share) {
-            await navigator.share(shareData);
-        } else {
-            console.log('Web Share API not supported. Copying link instead.');
-            handleCopyLink(linkToShare);
-        }
-        setShowMoreOptions(false);
-        setOpenTrackOptionsId(null);
-    } catch (err) {
-        console.error('Error sharing:', err);
-    }
+    // In this Canvas environment, navigator.share() is often restricted in iframes.
+    // We will directly use the copy link functionality as a reliable alternative.
+    console.log('Attempting to share/copy link...');
+    handleCopyLink(linkToShare); // Directly call copy function
+    setShowMoreOptions(false);
+    setOpenTrackOptionsId(null);
   };
 
   const handleListenInSoundCloud = () => {
