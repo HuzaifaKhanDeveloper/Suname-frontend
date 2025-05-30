@@ -3,44 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { biography } from '../data/biography';
 import {
-  Play,
-  Pause,
   Heart,
   Share2,
   Download,
   MoreHorizontal,
-  Clock,
-  Calendar,
   Headphones,
-  Volume2,
-  Shuffle,
-  Repeat,
-  SkipBack,
-  SkipForward,
   Music
 } from 'lucide-react';
 
 const MusicPage = () => {
   const { isDarkMode } = useTheme();
-  const [activeTrack, setActiveTrack] = useState(null);
   const [likedTracks, setLikedTracks] = useState(new Set());
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isShuffled, setIsShuffled] = useState(false);
-  const [repeatMode, setRepeatMode] = useState(0); // 0: off, 1: all, 2: one
-  const [volume, setVolume] = useState(75);
-
-  // Mock audio visualization data
-  const [audioData, setAudioData] = useState(Array.from({ length: 64 }, () => Math.random()));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (activeTrack !== null) {
-        setCurrentTime(prev => (prev + 1) % 180); // 3 minute mock duration
-        setAudioData(Array.from({ length: 64 }, () => Math.random() * (activeTrack !== null ? 1 : 0.1)));
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [activeTrack]);
 
   const soundCloudLinks = [
     "https://soundcloud.com/suname/midnight-echoes",
@@ -127,13 +100,9 @@ const MusicPage = () => {
   ];
 
   const handleTrackClick = (trackId) => {
+    // Opens the SoundCloud link directly as play functionality is removed
     const randomLink = soundCloudLinks[Math.floor(Math.random() * soundCloudLinks.length)];
     window.open(randomLink, '_blank');
-  };
-
-  const togglePlay = (trackId) => {
-    setActiveTrack(activeTrack === trackId ? null : trackId);
-    setCurrentTime(0);
   };
 
   const toggleLike = (trackId) => {
@@ -144,12 +113,6 @@ const MusicPage = () => {
       newLiked.add(trackId);
     }
     setLikedTracks(newLiked);
-  };
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -191,15 +154,7 @@ const MusicPage = () => {
                 alt="SUNAME"
                 className="w-64 h-64 rounded-2xl shadow-2xl object-cover"
               />
-              <div className="absolute inset-0 bg-black/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileHover={{ scale: 1 }}
-                  className="bg-white/20 rounded-full p-4 backdrop-blur-sm"
-                >
-                  <Play className="w-8 h-8 text-white" />
-                </motion.div>
-              </div>
+              {/* Removed play button overlay */}
             </motion.div>
 
             <div className="flex-1 text-center lg:text-left">
@@ -247,15 +202,7 @@ const MusicPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <motion.button
-                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Play className="w-5 h-5" />
-                  Play
-                </motion.button>
-
+                {/* Removed Play button */}
                 <motion.button
                   className={`${isDarkMode ? 'border-gray-600 text-gray-300 hover:text-white' : 'border-gray-400 text-gray-600 hover:text-gray-900'} border-2 px-6 py-3 rounded-full font-semibold transition-colors`}
                   whileHover={{ scale: 1.05 }}
@@ -307,26 +254,11 @@ const MusicPage = () => {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Track Number / Play Button */}
+                {/* Track Number */}
                 <div className="w-8 flex justify-center">
-                  <span className={`group-hover:hidden text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                     {index + 1}
                   </span>
-                  <motion.button
-                    className="hidden group-hover:block"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      togglePlay(track.id);
-                    }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    {activeTrack === track.id ? (
-                      <Pause className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`} />
-                    ) : (
-                      <Play className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`} />
-                    )}
-                  </motion.button>
                 </div>
 
                 {/* Track Image */}
@@ -346,26 +278,7 @@ const MusicPage = () => {
                   </p>
                 </div>
 
-                {/* Waveform Visualization */}
-                <div className="hidden lg:flex items-center gap-1 w-32">
-                  {track.waveform.slice(0, 40).map((height, i) => (
-                    <motion.div
-                      key={i}
-                      className={`w-1 bg-gradient-to-t ${
-                        activeTrack === track.id
-                          ? 'from-green-500 to-green-300'
-                          : isDarkMode ? 'from-gray-700 to-gray-600' : 'from-gray-400 to-gray-300'
-                      } rounded-full`}
-                      style={{
-                        height: `${Math.max(2, height * 20)}px`,
-                      }}
-                      animate={activeTrack === track.id ? {
-                        height: [`${Math.max(2, height * 20)}px`, `${Math.max(2, height * 25)}px`, `${Math.max(2, height * 20)}px`]
-                      } : {}}
-                      transition={{ duration: 0.5, repeat: Infinity }}
-                    />
-                  ))}
-                </div>
+                {/* Removed Waveform Visualization */}
 
                 {/* Play Count */}
                 <div className={`hidden md:block text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} w-20`}>
@@ -408,89 +321,7 @@ const MusicPage = () => {
         </motion.div>
         </motion.div>
 
-        {/* Player Controls (when active) */}
-        <AnimatePresence>
-          {activeTrack && (
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 100, opacity: 0 }}
-              className={`fixed bottom-0 left-0 right-0 ${isDarkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-t backdrop-blur-lg p-4 z-50`}
-            >
-              <div className="max-w-7xl mx-auto flex items-center gap-4">
-                {/* Current Track Info */}
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <img
-                    src={tracks.find(t => t.id === activeTrack)?.imageUrl}
-                    alt=""
-                    className="w-12 h-12 rounded object-cover"
-                  />
-                  <div className="min-w-0">
-                    <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} truncate`}>
-                      {tracks.find(t => t.id === activeTrack)?.title}
-                    </p>
-                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} truncate`}>
-                      {tracks.find(t => t.id === activeTrack)?.artist}
-                    </p>
-                  </div>
-                  <Heart className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'} ml-2`} />
-                </div>
-
-                {/* Controls */}
-                <div className="flex items-center gap-4">
-                  <button className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                    <Shuffle className="w-5 h-5" />
-                  </button>
-                  <button className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                    <SkipBack className="w-5 h-5" />
-                  </button>
-                  <motion.button
-                    className="bg-white text-black rounded-full p-2 hover:scale-105"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => togglePlay(activeTrack)}
-                  >
-                    {activeTrack ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                  </motion.button>
-                  <button className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                    <SkipForward className="w-5 h-5" />
-                  </button>
-                  <button className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                    <Repeat className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Progress */}
-                <div className="flex items-center gap-2 flex-1">
-                  <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {formatTime(currentTime)}
-                  </span>
-                  <div className={`flex-1 h-1 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} rounded-full overflow-hidden`}>
-                    <motion.div
-                      className="h-full bg-white rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(currentTime / 180) * 100}%` }}
-                    />
-                  </div>
-                  <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    3:00
-                  </span>
-                </div>
-
-                {/* Volume */}
-                <div className="flex items-center gap-2">
-                  <Volume2 className={`w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
-                  <div className={`w-20 h-1 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} rounded-full`}>
-                    <div
-                      className="h-full bg-white rounded-full"
-                      style={{ width: `${volume}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Removed Player Controls */}
       </div>
     </motion.div>
   );
