@@ -46,15 +46,15 @@ const MusicPage = () => {
   const tracks = [
     {
       id: 1,
-      title: "Midnight Echoes",
+      title: "Elixr Orlando December Set",
       artist: "SUNAME",
       album: "Digital Dreams",
-      duration: "3:24",
-      releaseDate: "2024-12-15",
-      plays: "847,592",
-      genre: "Electronic",
-      imageUrl: "https://images.pexels.com/photos/1626481/pexels-photo-1626481.jpeg?auto=compress&cs=tinysrgb&w=800",
-      soundCloudLink: "https://soundcloud.com/suname/midnight-echoes",
+      duration: "1:01:13",
+      releaseDate: "5 months ago",
+      plays: "127",
+      genre: "Dance",
+      imageUrl: "https://i1.sndcdn.com/avatars-GkI4ZmDLFcspabfy-UDuvjA-t500x500.jpg",
+      soundCloudLink: "https://soundcloud.com/sunamemusic/suname-elixr-orlando-december-set?si=ff04e111b475436da612c6221f40115e",
       waveform: Array.from({ length: 100 }, (_, i) => Math.sin(i * 0.1) * 0.5 + Math.random() * 0.3)
     },
     {
