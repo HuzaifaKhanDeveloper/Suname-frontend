@@ -361,18 +361,17 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
 
   return (
     <>
-      {}
+      {/* Main background gradient */}
       <motion.div
         className="fixed inset-0"
         style={{ zIndex: -21 }}
         animate={{
           background: isDarkRealm ? backgroundGradients.dark : backgroundGradients.light,
         }}
-
         transition={{ duration: 1.0, ease: 'easeInOut' }}
       />
 
-      {}
+      {/* Atmospheric haze */}
       <motion.div
         className="fixed inset-0"
         style={{
@@ -390,6 +389,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Lightning effects */}
       {showLightning && (
         <>
           {[...Array(3)].map((_, index) => (
@@ -445,6 +445,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         </>
       )}
 
+      {/* Sun/Moon */}
       <motion.div
         className="fixed"
         style={{
@@ -474,6 +475,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Sun/Moon Halo */}
       <motion.div
         className="fixed"
         style={{
@@ -496,6 +498,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Birds (Light Realm) */}
       {!isDarkRealm && showBirds && (
         <div className="fixed inset-0" style={{ zIndex: -17 }}>
           {[...Array(6)].map((_, i) => (
@@ -549,6 +552,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         </div>
       )}
 
+      {/* Stars and Shooting Stars (Dark Realm) */}
       {isDarkRealm && (
         <div className="fixed inset-0" style={{ zIndex: -17 }}>
           {[...Array(120)].map((_, i) => (
@@ -605,7 +609,8 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         </div>
       )}
 
-      <motion.div
+      {/* Horizon Line - REMOVED */}
+      {/* <motion.div
         className="fixed left-0 right-0"
         style={{
           zIndex: -16,
@@ -623,8 +628,9 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-      />
+      /> */}
 
+      {/* Ocean */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -642,7 +648,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {}
+      {/* Ocean Ripples */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -664,7 +670,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {}
+      {/* Water Waves Layer 1 */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -686,6 +692,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Water Waves Layer 2 */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
@@ -707,6 +714,7 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Reflection */}
       <motion.div
         className="fixed"
         style={{
@@ -730,20 +738,22 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
+      {/* Beach Sand Layer */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
           zIndex: -11,
-          height: 'clamp(18vh, 25vh, 30vh)',
+          height: 'clamp(12vh, 18vh, 22vh)', /* Adjusted height */
           background: isDarkRealm ? beachSandGradients.dark : beachSandGradients.light,
         }}
       />
 
+      {/* Sand Texture Layer */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
           zIndex: -10,
-          height: 'clamp(16vh, 23vh, 28vh)',
+          height: 'clamp(10vh, 16vh, 20vh)', /* Adjusted height */
           background: isDarkRealm ? sandTextureGradients.dark : sandTextureGradients.light,
           backgroundSize: `
             clamp(25px, 5vw, 60px) clamp(25px, 5vw, 60px),
@@ -764,19 +774,19 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {}
+      {/* Beach Wave Line 1 */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
           zIndex: -9.5,
           height: 'clamp(5vh, 7vh, 9vh)',
-          top: `calc(100% - clamp(18vh, 25vh, 30vh) + clamp(0px, 0.5vw, 5px))`,
+          top: `calc(100% - clamp(12vh, 18vh, 22vh) + clamp(0px, 0.5vw, 5px))`, /* Adjusted top */
           background: isDarkRealm ? backgroundGradients.beachWaveLineDark : backgroundGradients.beachWaveLine,
           opacity: 0.7,
-          filter: 'blur(1px)',
+          filter: 'blur(2px)', /* Increased blur */
           borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
           transformOrigin: 'bottom center',
-          maskImage: 'linear-gradient(to top, transparent 0%, black 30%, black 70%, transparent 100%)',
+          maskImage: 'linear-gradient(to top, transparent 0%, black 10%, black 90%, transparent 100%)', /* Softened mask */
         }}
         animate={{
           y: ['0%', '-5%', '0%'],
@@ -790,16 +800,16 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      {}
+      {/* Beach Wave Line 2 */}
       <motion.div
         className="fixed bottom-0 left-0 right-0"
         style={{
           zIndex: -9.4,
           height: 'clamp(4vh, 6vh, 8vh)',
-          top: `calc(100% - clamp(18vh, 25vh, 30vh) + clamp(1.5vh, 2vw, 20px))`,
+          top: `calc(100% - clamp(12vh, 18vh, 22vh) + clamp(1.5vh, 2vw, 20px))`, /* Adjusted top */
           background: isDarkRealm ? backgroundGradients.beachWaveLineDark : backgroundGradients.beachWaveLine,
           opacity: 0.5,
-          filter: 'blur(1.5px)',
+          filter: 'blur(2.5px)', /* Increased blur */
           borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
           transformOrigin: 'bottom center',
           maskImage: 'linear-gradient(to top, transparent 0%, black 20%, black 80%, transparent 100%)',
@@ -816,27 +826,8 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         }}
       />
 
-      <motion.div
-        className="fixed bottom-0 left-0 right-0"
-        style={{
-          zIndex: -9,
-          height: 'clamp(2px, 0.5vw, 4.5px)',
-          background: isDarkRealm ? wetSandEdgeGradients.dark : wetSandEdgeGradients.light,
-          top: `calc(100% - clamp(18vh, 25vh, 30vh))`,
-          filter: 'blur(clamp(1px, 0.4vw, 3px))',
-        }}
-        animate={{
-          opacity: [0.8, 1, 0.8],
-          scaleX: [1, 1.08, 1],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-
-      <div className="fixed bottom-0 left-0 right-0" style={{ height: 'clamp(15vh, 20vh, 25vh)', zIndex: -8 }}>
+      {/* Footprints and Shells Container */}
+      <div className="fixed bottom-0 left-0 right-0" style={{ height: 'clamp(10vh, 15vh, 18vh)', zIndex: -8 }}> {/* Adjusted height */}
         {[...Array(18)].map((_, i) => (
           <motion.div
             key={`footprint-${i}`}
@@ -892,8 +883,8 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ isDarkRealm }) =>
         ))}
       </div>
 
-      {}
-      <div className="fixed bottom-0 left-0 right-0" style={{ height: 'clamp(20vh, 30vh, 35vh)', zIndex: -5 }}>
+      {/* Beach Sparkles Container */}
+      <div className="fixed bottom-0 left-0 right-0" style={{ height: 'clamp(15vh, 20vh, 25vh)', zIndex: -5 }}> {/* Adjusted height to be consistent with new sand height */}
         {[...Array(50)].map((_, i) => (
           <motion.div
             key={`beach-sparkle-${i}`}
