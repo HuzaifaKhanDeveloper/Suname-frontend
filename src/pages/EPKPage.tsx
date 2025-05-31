@@ -9,7 +9,6 @@ const EPKPage = () => {
   const { isDarkMode } = useTheme();
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  // Define images that need object-position adjustment to prevent heads from being cut off
   const imagesToAdjust = [
     "/images/artist_orange.jpg",
     "/images/darkPhoto1.jpg",
